@@ -1,0 +1,5 @@
+body { font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: auto; }
+h1, h2 { color: #333; }
+button { margin-left: 10px; }
+ul { list-style-type: none; padding-left: 0; }
+li { margin-bottom: 10px; }
