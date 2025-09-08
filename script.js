@@ -1,4 +1,7 @@
-// "Adatbázis-szerű" tömb
+const urlParams = new URLSearchParams(window.location.search);
+const table = urlParams.get('table') || '1';
+document.querySelector('h1').textContent = `Asztal ${table}`;
+
 const categories = [
   {
     name: "Pizzák",
@@ -44,10 +47,10 @@ const categories = [
   }
 ];
 
-// Kosár
+// Cart
 let cart = {};
 
-// Menü generálás
+// Menu
 function renderMenu() {
   let menuDiv = document.getElementById("menu-list");
   menuDiv.innerHTML = "";
@@ -74,7 +77,7 @@ function renderMenu() {
   });
 }
 
-// Kosár frissítés
+// cart update
 function updateCart(id, name, price, change) {
   if (!cart[id]) {
     cart[id] = { name: name, qty: 0, price: price };
@@ -85,7 +88,7 @@ function updateCart(id, name, price, change) {
     delete cart[id];
   }
 
-  // menü mennyiség frissítése
+  // qty update
   let qtySpan = document.getElementById("qty-" + id);
   if (qtySpan) {
     qtySpan.textContent = cart[id] ? cart[id].qty : 0;
@@ -94,7 +97,6 @@ function updateCart(id, name, price, change) {
   renderCart();
 }
 
-// Kosár kirajzolás
 function renderCart() {
   let cartList = document.getElementById("cart");
   cartList.innerHTML = "";
@@ -118,7 +120,7 @@ function renderCart() {
   document.getElementById("total").textContent = "Összesen: " + total + " RON";
 }
 
-// Rendelés
+// order
 function placeOrder() {
   if (Object.keys(cart).length === 0) {
     alert("A kosár üres!");
@@ -127,5 +129,4 @@ function placeOrder() {
   alert("Rendelés leadva! Köszönjük!");
 }
 
-// Oldal betöltéskor menü generálás
 renderMenu();
