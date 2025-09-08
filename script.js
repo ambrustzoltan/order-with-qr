@@ -7,7 +7,7 @@ const categories = {
     { 
       sub_menu: "Pizzák",
       items: [
-        { id: 100, name: "Pizza Bacon", price: 32 },
+        { id: 100, name: "Pizza Bacon", price: 32, img: "https://fourstarpizzaploiesti.ro/wp-content/uploads/2023/05/pizza-bacon-deluxe-600x600.jpg"},
         { id: 101, name: "Pizza Capriciosa", price: 32 },
         { id: 102, name: "Pizza Carnivora", price: 37 },
         { id: 103, name: "Pizza Diavola", price: 31 }
