@@ -1,44 +1,83 @@
 <!DOCTYPE html>
 <html lang="hu">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>QR Demo Éttermi Rendelő</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <h1></h1>
 
     <h2>Menü</h2>
-    <ul id="menu">
-        <li>
-            Pizza Margherita - 40 RON
-            <button onclick="addToCart(1,'Pizza Margherita', 40)">Hozzáadás</button>
-        </li>
+    <div id="menu">
+        <h3>Pizzák</h3>
+        <ul id="pizza">
+            <li>
+                Pizza Margherita - 40 RON
+                <button onclick="addToCart(1,'Pizza Margherita', 40)">Hozzáadás</button>
+            </li>
+            <li>
+                Pizza Margherita - 40 RON
+                <button onclick="addToCart(2,'Pizza Margherita', 40)">Hozzáadás</button>
+            </li>
+            <li>
+                Pizza Margherita - 40 RON
+                <button onclick="addToCart(3,'Pizza Margherita', 40)">Hozzáadás</button>
+            </li>
+            <li>
+                Pizza Margherita - 40 RON
+                <button onclick="addToCart(4,'Pizza Margherita', 40)">Hozzáadás</button>
+            </li>
+        </ul>
+        <h3>Spagettik</h3>
+        <ul id="spagetti"></ul>
         <li>
             Spagetti Carbonara - 35 RON
-            <button onclick="addToCart(2, 'Spagetti Carbonara', 35)">Hozzáadás</button>
+            <button onclick="addToCart(10, 'Spagetti Carbonara', 35)">Hozzáadás</button>
         </li>
+        </ul>
+        <h3>Saláták</h3>
+        <ul id="salad"></ul>
         <li>
             Saláta - 30 RON
-            <button onclick="addToCart(3, 'Saláta', 30)">Hozzáadás</button>
+            <button onclick="addToCart(30, 'Saláta', 30)">Hozzáadás</button>
         </li>
-    </ul>
+        </ul>
+    </div>
 
     <h2>Itallap</h2>
-    <ul id="drinks">
+    <ul id="coffee">
         <li>
             Kávé - 8 RON
-            <button onclick="addToCart(10, 'Kávé', 8)">Hozzáadás</button>
+            <button onclick="addToCart(200, 'Kávé', 8)">Hozzáadás</button>
+        </li>
+        <li>
+            Capuccino - 8 RON
+            <button onclick="addToCart(201, 'Capuccino', 8)">Hozzáadás</button>
+        </li>
+    </ul>
+    <ul id="drinks">
+        <li>
+            Cola - 10 RON
+            <button onclick="addToCart(300, 'Víz', 10)">Hozzáadás</button>
         </li>
         <li>
             Cola - 10 RON
-            <button onclick="addToCart(11, 'Cola', 10)">Hozzáadás</button>
+            <button onclick="addToCart(301, 'Cola', 10)">Hozzáadás</button>
         </li>
-        <li>
-            Sör - 10 RON
-            <button onclick="addToCart(12, 'Sör', 10)">Hozzáadás</button>
-        </li>
+    </ul>
+    <ul id="adult-drinks"></ul>
+    <li>
+        Heineken - 10 RON
+        <button onclick="addToCart(400, 'Sör', 10)">Hozzáadás</button>
+    </li>
+    <li>
+        Silva - 15 RON
+        <button onclick="addToCart(401, 'Sör', 10)">Hozzáadás</button>
+    </li>
     </ul>
 
     <h2>Kosár</h2>
@@ -47,4 +86,5 @@
 
     <script src="script.js"></script>
 </body>
+
 </html>
