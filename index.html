@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR Demo Éttermi Rendelő</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Asztal 1</h1>
+  <h2>Menü</h2>
+  <ul id="menu">
+    <li>
+      Pizza Margherita - 2000 Ft 
+      <button onclick="addToCart('Pizza Margherita')">Hozzáadás</button>
+    </li>
+    <li>
+      Spagetti Carbonara - 2500 Ft
+      <button onclick="addToCart('Spagetti Carbonara')">Hozzáadás</button>
+    </li>
+    <li>
+      Saláta - 1500 Ft
+      <button onclick="addToCart('Saláta')">Hozzáadás</button>
+    </li>
+  </ul>
+
+  <h2>Kosár</h2>
+  <ul id="cart"></ul>
+  <button onclick="placeOrder()">Rendelés leadása</button>
+
+  <script src="script.js"></script>
+</body>
+</html>
