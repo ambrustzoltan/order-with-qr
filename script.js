@@ -1,6 +1,10 @@
+const urlParams = new URLSearchParams(window.location.search);
+const table = urlParams.get('table') || '1';
+document.querySelector('h1').textContent = `Asztal ${table}`;
+
 let cart = [];
 
-function addToCart(name, price) {
+function addToCart(id, name, price) {
     cart.push({name, price});
     renderCart();
 }
