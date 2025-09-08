@@ -10,80 +10,83 @@
 
 <body>
     <h1></h1>
+    <div class="container">
 
-    <h2>Menü</h2>
-    <div id="menu">
-        <h3>Pizzák</h3>
-        <ul id="pizza">
-            <li>
-                Pizza Bacon - 32 RON
-                <button onclick="addToCart(1,'Pizza Bacon', 32)">Hozzáadás</button>
-            </li>
-            <li>
-                Pizza Capriciosa - 32 RON
-                <button onclick="addToCart(2,'Pizza Capriciosa', 32)">Hozzáadás</button>
-            </li>
-            <li>
-                Pizza Carnivora - 37 RON
-                <button onclick="addToCart(3,'Pizza Carnivora', 37)">Hozzáadás</button>
-            </li>
-            <li>
-                Pizza Diavola - 31 RON
-                <button onclick="addToCart(4,'Pizza Diavola', 31)">Hozzáadás</button>
-            </li>
-        </ul>
-        <h3>Spagettik</h3>
-        <ul id="spagetti"></ul>
-        <li>
-            Spagetti Carbonara - 28 RON
-            <button onclick="addToCart(10, 'Spagetti Carbonara', 28)">Hozzáadás</button>
-        </li>
-        </ul>
-        <h3>Saláták</h3>
-        <ul id="salad"></ul>
-        <li>
-            Saláta - 25 RON
-            <button onclick="addToCart(30, 'Saláta', 25)">Hozzáadás</button>
-        </li>
-        </ul>
+        <div id="cart-container">
+            <h2>Kosár</h2>
+            <ul id="cart"></ul>
+            <button onclick="placeOrder()">Rendelés leadása</button>
+        </div>
+
+        <h2>Menü</h2>
+        <div id="menu">
+            <h3>Pizzák</h3>
+            <ul id="pizza">
+                <li>
+                    Pizza Bacon - 32 RON
+                    <button onclick="addToCart(1,'Pizza Bacon', 32)">Hozzáadás</button>
+                </li>
+                <li>
+                    Pizza Capriciosa - 32 RON
+                    <button onclick="addToCart(2,'Pizza Capriciosa', 32)">Hozzáadás</button>
+                </li>
+                <li>
+                    Pizza Carnivora - 37 RON
+                    <button onclick="addToCart(3,'Pizza Carnivora', 37)">Hozzáadás</button>
+                </li>
+                <li>
+                    Pizza Diavola - 31 RON
+                    <button onclick="addToCart(4,'Pizza Diavola', 31)">Hozzáadás</button>
+                </li>
+            </ul>
+            <h3>Spagettik</h3>
+            <ul id="spagetti">
+                <li>
+                    Spagetti Carbonara - 28 RON
+                    <button onclick="addToCart(10, 'Spagetti Carbonara', 28)">Hozzáadás</button>
+                </li>
+            </ul>
+            <h3>Saláták</h3>
+            <ul id="salad">
+                <li>
+                    Saláta - 25 RON
+                    <button onclick="addToCart(30, 'Saláta', 25)">Hozzáadás</button>
+                </li>
+            </ul>
+
+            <h2>Itallap</h2>
+            <ul id="coffee">
+                <li>
+                    Kávé - 8 RON
+                    <button onclick="addToCart(200, 'Kávé', 8)">Hozzáadás</button>
+                </li>
+                <li>
+                    Capuccino - 9 RON
+                    <button onclick="addToCart(201, 'Capuccino', 9)">Hozzáadás</button>
+                </li>
+            </ul>
+            <ul id="drinks">
+                <li>
+                    Víz - 8 RON
+                    <button onclick="addToCart(300, 'Víz', 8)">Hozzáadás</button>
+                </li>
+                <li>
+                    Cola - 10 RON
+                    <button onclick="addToCart(301, 'Cola', 10)">Hozzáadás</button>
+                </li>
+            </ul>
+            <ul id="adult-drinks">
+                <li>
+                    Heineken - 10 RON
+                    <button onclick="addToCart(400, 'Heineken', 10)">Hozzáadás</button>
+                </li>
+                <li>
+                    Silva - 15 RON
+                    <button onclick="addToCart(401, 'Silva', 15)">Hozzáadás</button>
+                </li>
+            </ul>
+        </div>
     </div>
-
-    <h2>Itallap</h2>
-    <ul id="coffee">
-        <li>
-            Kávé - 8 RON
-            <button onclick="addToCart(200, 'Kávé', 8)">Hozzáadás</button>
-        </li>
-        <li>
-            Capuccino - 9 RON
-            <button onclick="addToCart(201, 'Capuccino', 9)">Hozzáadás</button>
-        </li>
-    </ul>
-    <ul id="drinks">
-        <li>
-            Víz - 8 RON
-            <button onclick="addToCart(300, 'Víz', 8)">Hozzáadás</button>
-        </li>
-        <li>
-            Cola - 10 RON
-            <button onclick="addToCart(301, 'Cola', 10)">Hozzáadás</button>
-        </li>
-    </ul>
-    <ul id="adult-drinks"></ul>
-    <li>
-        Heineken - 10 RON
-        <button onclick="addToCart(400, 'Heineken', 10)">Hozzáadás</button>
-    </li>
-    <li>
-        Silva - 15 RON
-        <button onclick="addToCart(401, 'Silva', 15)">Hozzáadás</button>
-    </li>
-    </ul>
-
-    <h2>Kosár</h2>
-    <ul id="cart"></ul>
-    <button onclick="placeOrder()">Rendelés leadása</button>
-
     <script src="script.js"></script>
 </body>
 
