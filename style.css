@@ -1,20 +1,41 @@
 body {
     font-family: Arial, sans-serif;
-    margin: 20px;
+    padding: 20px;
+    max-width: 600px;
+    margin: auto;
+}
+
+h1,
+h2 {
+    color: #333;
+}
+
+button {
+    margin-left: 10px;
+}
+
+ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+li {
+    margin-bottom: 10px;
 }
 
 .container {
     display: flex;
-    gap: 20px; 
-}
-
-#cart-container {
-    flex: 0 0 250px; 
-    border: 1px solid #ccc;
-    padding: 10px;
-    background-color: #f9f9f9;
+    gap: 20px;
 }
 
 #menu {
     flex: 1;
+}
+
+
+#cart-container {
+    flex: 0 0 250px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    background-color: #f9f9f9;
 }
