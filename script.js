@@ -7,22 +7,22 @@ const categories = {
     { 
       sub_menu: "Pizzák",
       items: [
-        { id: 1, name: "Pizza Bacon", price: 32 },
-        { id: 2, name: "Pizza Capriciosa", price: 32 },
-        { id: 3, name: "Pizza Carnivora", price: 37 },
-        { id: 4, name: "Pizza Diavola", price: 31 }
+        { id: 100, name: "Pizza Bacon", price: 32 },
+        { id: 101, name: "Pizza Capriciosa", price: 32 },
+        { id: 102, name: "Pizza Carnivora", price: 37 },
+        { id: 103, name: "Pizza Diavola", price: 31 }
       ]
     },
     {
       sub_menu: "Spagettik",
       items: [
-        { id: 10, name: "Spagetti Carbonara", price: 28 }
+        { id: 200, name: "Spagetti Carbonara", price: 28 }
       ]
     },
     {
       sub_menu: "Saláták",
       items: [
-        { id: 30, name: "Saláta", price: 25 }
+        { id: 300, name: "Saláta", price: 25 }
       ]
     }
   ],
@@ -30,22 +30,22 @@ const categories = {
     {
       sub_menu: "Kávék",
       items: [
-        { id: 200, name: "Kávé", price: 8 },
-        { id: 201, name: "Capuccino", price: 9 }
+        { id: 400, name: "Kávé", price: 8 },
+        { id: 401, name: "Capuccino", price: 9 }
       ]
     },
     {
       sub_menu: "Üdítők",
       items: [
-        { id: 300, name: "Víz", price: 8 },
-        { id: 301, name: "Cola", price: 10 }
+        { id: 500, name: "Víz", price: 8 },
+        { id: 501, name: "Cola", price: 10 }
       ]
     },
     {
       sub_menu: "Alkoholos italok",
       items: [
-        { id: 400, name: "Heineken", price: 10 },
-        { id: 401, name: "Silva", price: 15 }
+        { id: 600, name: "Heineken", price: 10 },
+        { id: 601, name: "Silva", price: 15 }
       ]
     }
   ]
@@ -163,6 +163,20 @@ function deleteCartItem(id) {
 
   renderCart();
 }
+
+// Clear entire cart
+function clearCart() {
+  // Reset menu quantities
+  for (let id in cart) {
+    const qtySpan = document.getElementById("qty-" + id);
+    if (qtySpan) qtySpan.textContent = 0;
+  }
+
+  // Clear cart
+  cart = {};
+  renderCart();
+}
+
 
 // Place order
 function placeOrder() {
