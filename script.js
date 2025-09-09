@@ -184,27 +184,62 @@ async function placeOrder() {
             subtotal: item.qty * item.price
         };
     }
-    // Insert order into DB
-    const { data, error } = await db
+
+    // Check for existing open order for the table
+    const { data: existing, error: fetchError } = await db
         .from("orders")
-        .insert([
-            {
-                table_number: parseInt(table),
-                items: itemsForDb,
-                total: total,
-                status: 0
-            }
-        ])
-        .select();
-    // Check for errors
-    if (error) {
-        console.error("Hiba:", error);
-        alert("❌ Nem sikerült elmenteni a rendelést!");
+        .select("*")
+        .eq("table_number", parseInt(table))
+        .eq("status", 0)
+        .limit(1);
+
+    if (fetchError) {
+        console.error(fetchError);
+        alert("Hiba történt!");
         return;
     }
 
-    alert(`✅ Rendelés leadva!\nVégösszeg: ${total} RON\nRendelés azonosító: ${data[0].id}`);
+    // If exists, update it; else, create new
+    if (existing.length > 0) {
+        let updatedItems = { ...existing[0].items, ...itemsForDb };
+        let updatedTotal = Object.values(updatedItems).reduce((sum, item) => sum + item.subtotal, 0);
 
+        const { error: updateError } = await db
+            .from("orders")
+            .update({ items: updatedItems, total: updatedTotal })
+            .eq("id", existing[0].id);
+
+        if (updateError) {
+            console.error(updateError);
+            alert("Nem sikerült frissíteni a rendelést!");
+            return;
+        }
+
+        alert(`✅ Rendelés frissítve! Összesen: ${updatedTotal} RON`);
+
+    } else {
+        const { data, error } = await db
+            .from("orders")
+            .insert([
+                {
+                    table_number: parseInt(table),
+                    items: itemsForDb,
+                    total: total,
+                    status: 0
+                }
+            ])
+            .select();
+
+        if (error) {
+            console.error(error);
+            alert("❌ Nem sikerült elmenteni a rendelést!");
+            return;
+        }
+
+        alert(`✅ Rendelés leadva! Összesen: ${total} RON`);
+    }
+
+    // Clear cart after placing order
     cart = {};
     renderMenu();
     renderCart();
