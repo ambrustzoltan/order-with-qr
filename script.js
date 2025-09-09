@@ -176,7 +176,6 @@ async function placeOrder() {
     for (let id in cart) {
         let item = cart[id];
         newItems[id] = {
-            id: parseInt(id),
             name: item.name,
             qty: item.qty,
             unit_price: item.price,
