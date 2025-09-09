@@ -199,12 +199,14 @@ async function placeOrder() {
         .from("orders")
         .insert([
             {
-                table_number: parseInt(table), 
-                items: cart,                  // Kosár tartalma
-                total: total,   // Végösszeg
-                status: 0              // 0 = új, 1 = felszolgálva, 2 = kifizetve        
+                table_number: parseInt(table),
+                items: cart,
+                total: total,
+                status: 0
             }
-        ]);
+        ])
+        .select(); // Return the inserted row(s)
+
 
     if (error) {
         console.error("Hiba:", error);
