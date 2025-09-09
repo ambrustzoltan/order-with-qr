@@ -171,12 +171,11 @@ async function placeOrder() {
         return;
     }
 
-
+    // Prepare items for DB
     let newItems = {};
     for (let id in cart) {
         let item = cart[id];
         newItems[id] = {
-            id: parseInt(id),
             name: item.name,
             qty: item.qty,
             unit_price: item.price,
@@ -184,6 +183,7 @@ async function placeOrder() {
         };
     }
 
+    // Check for existing open order for the table
     const { data: existing, error: fetchError } = await db
         .from("orders")
         .select("*")
@@ -193,6 +193,7 @@ async function placeOrder() {
 
     if (fetchError) { console.error(fetchError); alert("Hiba történt!"); return; }
 
+    // If exists, update it
     if (existing.length > 0) {
         let updatedItems = { ...existing[0].items };
         for (let id in newItems) {
@@ -206,6 +207,7 @@ async function placeOrder() {
 
         let updatedTotal = Object.values(updatedItems).reduce((sum, item) => sum + item.subtotal, 0);
 
+        // Update the existing order
         const { error: updateError } = await db
             .from("orders")
             .update({ items: updatedItems, total: updatedTotal })
@@ -215,6 +217,7 @@ async function placeOrder() {
 
         alert(`✅ Rendelés frissítve! Összesen: ${updatedTotal} RON`);
 
+        // If not, create a new order
     } else {
         let total = Object.values(newItems).reduce((sum, item) => sum + item.subtotal, 0);
 
@@ -235,6 +238,7 @@ async function placeOrder() {
         alert(`✅ Rendelés leadva! Összesen: ${total} RON`);
     }
 
+    // Clear cart
     cart = {};
     renderMenu();
     renderCart();
