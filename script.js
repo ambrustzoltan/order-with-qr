@@ -1,3 +1,9 @@
+
+// Supabase init
+const supabaseUrl = "https://ggfrpfpdtzxbrzzwbtpv.supabase.co"; // <- your project URL
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdnZnJwZnBkdHp4YnJ6endidHB2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc0MDc2NzYsImV4cCI6MjA3Mjk4MzY3Nn0.bfjwtlZ7It9Z_fFAIvVgSQ9NrkylgJqODIdkGTxBKnY";                     // <- anon public key
+const db = supabase.createClient(supabaseUrl, supabaseKey);
+
 const urlParams = new URLSearchParams(window.location.search);
 const table = urlParams.get('table') || '1';
 document.querySelector('h1').textContent = `Asztal ${table}`;
@@ -180,22 +186,36 @@ function clearCart() {
 }
 
 
-// Place order
-function placeOrder() {
+// Place order - Supabase verzió
+async function placeOrder() {
     if (Object.keys(cart).length === 0) {
         alert("A kosár üres!");
         return;
     }
 
-    let orderText = Object.values(cart)
-        .map(item => `${item.name} - ${item.qty} x ${item.price} RON`)
-        .join("\n");
-
     let total = Object.values(cart).reduce((sum, item) => sum + item.qty * item.price, 0);
 
-    alert(`Rendelés leadva:\n${orderText}\n\nVégösszeg: ${total} RON`);
+    const { data, error } = await db
+        .from("orders")
+        .insert([
+            {
+                table_number: parseInt(table), 
+                items: cart,                  // Kosár tartalma
+                total: total,   // Végösszeg
+                status: 0              // 0 = új, 1 = felszolgálva, 2 = kifizetve        
+            }
+        ]);
 
-    // Clear cart
+    if (error) {
+        console.error("Hiba:", error);
+        alert("❌ Nem sikerült elmenteni a rendelést!");
+        return;
+    }
+
+    // Ha sikerült menteni
+    alert(`✅ Rendelés leadva!\nVégösszeg: ${total} RON\n\nAzonosító: ${data[0].id}`);
+
+    // Kosár ürítés
     cart = {};
     renderMenu();
     renderCart();
