@@ -54,15 +54,16 @@ function renderMenu() {
 
     foodDiv.innerHTML = "";
     drinkDiv.innerHTML = "";
-
+    // Render food
     categories.food.forEach(cat => {
         const h3 = document.createElement("h3");
         h3.textContent = cat.sub_menu;
         foodDiv.appendChild(h3);
-
+        // Render items
         const ul = document.createElement("ul");
         cat.items.forEach(item => {
             const li = document.createElement("li");
+            // Using template literals for better readability
             li.innerHTML = `
                 ${item.img ? `<img src="${item.img}" alt="${item.name}">` : ""}
                 <div class="item-row">
@@ -106,7 +107,7 @@ function updateCart(id, name, price, change) {
     if (!cart[id]) cart[id] = { name, qty: 0, price };
     cart[id].qty += change;
     if (cart[id].qty <= 0) delete cart[id];
-
+    // Update quantity display
     const qtySpan = document.getElementById("qty-" + id);
     if (qtySpan) qtySpan.textContent = cart[id] ? cart[id].qty : 0;
 
@@ -119,7 +120,7 @@ function renderCart() {
     cartList.innerHTML = "";
 
     let total = 0;
-
+    // Iterate over cart items
     for (let id in cart) {
         const item = cart[id];
         const subtotal = item.qty * item.price;
@@ -153,7 +154,7 @@ function deleteCartItem(id) {
     if (qtySpan) qtySpan.textContent = 0;
     renderCart();
 }
-
+// Clear entire cart
 function clearCart() {
     for (let id in cart) {
         const qtySpan = document.getElementById("qty-" + id);
@@ -183,7 +184,7 @@ async function placeOrder() {
             subtotal: item.qty * item.price
         };
     }
-
+    // Insert order into DB
     const { data, error } = await db
         .from("orders")
         .insert([
@@ -195,14 +196,14 @@ async function placeOrder() {
             }
         ])
         .select();
-
+    // Check for errors
     if (error) {
         console.error("Hiba:", error);
         alert("❌ Nem sikerült elmenteni a rendelést!");
         return;
     }
 
-    alert(`✅ Rendelés leadva!\nVégösszeg: ${total} RON\nAzonosító: ${data[0].id}`);
+    alert(`✅ Rendelés leadva!\nVégösszeg: ${total} RON\nAzonosító: ${parseInt(table)}`);
 
     cart = {};
     renderMenu();
