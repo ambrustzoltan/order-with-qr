@@ -65,7 +65,7 @@
                 .from("orders")
                 .select("*")
                 .eq("status", 0)
-                .order("id", { ascending: true });
+                .order("table_number", { ascending: true });
 
             if (error) { console.error(error); return; }
 
