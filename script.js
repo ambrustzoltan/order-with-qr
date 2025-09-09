@@ -64,11 +64,13 @@ function renderMenu() {
         cat.items.forEach(item => {
             const li = document.createElement("li");
             li.innerHTML = `
-                ${item.img ? `<img src="${item.img}" alt="${item.name}" style="width:50px; height:50px; object-fit:cover; margin-right:10px;">` : ""}
-                ${item.name} - ${item.price} RON
-                <button onclick="updateCart(${item.id}, '${item.name}', ${item.price}, -1)">-</button>
-                <span id="qty-${item.id}">0</span>
-                <button onclick="updateCart(${item.id}, '${item.name}', ${item.price}, 1)">+</button>
+                ${item.img ? `<img src="${item.img}" alt="${item.name}">` : ""}
+                <div class="item-row">
+                    <span>${item.name} - ${item.price} RON</span>
+                    <button onclick="updateCart(${item.id}, '${item.name}', ${item.price}, -1)">-</button>
+                    <span id="qty-${item.id}">0</span>
+                    <button onclick="updateCart(${item.id}, '${item.name}', ${item.price}, 1)">+</button>
+                </div>
             `;
             ul.appendChild(li);
         });
@@ -85,12 +87,14 @@ function renderMenu() {
             const li = document.createElement("li");
             // Using template literals for better readability
             li.innerHTML = `
-                ${item.img ? `<img src="${item.img}" alt="${item.name}" style="width:50px; height:50px; object-fit:cover; margin-right:10px;">` : ""}
-                ${item.name} - ${item.price} RON
-                <button onclick="updateCart(${item.id}, '${item.name}', ${item.price}, -1)">-</button>
-                <span id="qty-${item.id}">0</span>
-                <button onclick="updateCart(${item.id}, '${item.name}', ${item.price}, 1)">+</button>
-            `;
+                    ${item.img ? `<img src="${item.img}" alt="${item.name}">` : ""}
+                    <div class="item-row">
+                        <span>${item.name} - ${item.price} RON</span>
+                        <button onclick="updateCart(${item.id}, '${item.name}', ${item.price}, -1)">-</button>
+                        <span id="qty-${item.id}">0</span>
+                        <button onclick="updateCart(${item.id}, '${item.name}', ${item.price}, 1)">+</button>
+                    </div>
+                `;
             ul.appendChild(li);
         });
         drinkDiv.appendChild(ul);

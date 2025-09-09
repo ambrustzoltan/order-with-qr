@@ -21,8 +21,8 @@ ul {
 
 li {
     display: flex;
-    flex-direction: column; /* kép felül, szöveg alul */
-    align-items: center;    /* középre igazítás vízszintesen */
+    flex-direction: column; 
+    align-items: center;    
     margin-bottom: 10px;
 }
 
@@ -30,8 +30,15 @@ li img {
     width: 50px;
     height: 50px;
     object-fit: cover;
-    margin-bottom: 5px; /* kis tér a kép és a szöveg között */
+    margin-bottom: 5px; 
 }
+
+.item-row {
+    display: flex;
+    align-items: center; 
+    gap: 5px;            
+}
+
 
 
 .container {
