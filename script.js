@@ -203,7 +203,7 @@ async function placeOrder() {
         return;
     }
 
-    alert(`✅ Rendelés leadva!\nVégösszeg: ${total} RON\nAzonosító: ${parseInt(table)}`);
+    alert(`✅ Rendelés leadva!\nVégösszeg: ${total} RON\nRendelés azonosító: ${data[0].id}`);
 
     cart = {};
     renderMenu();
