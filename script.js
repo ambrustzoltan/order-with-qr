@@ -127,11 +127,16 @@ function renderCart() {
 
         const li = document.createElement("li");
         li.innerHTML = `
-            ${item.name} - ${item.qty} x ${item.price} RON = ${subtotal} RON
-            <button onclick="updateCart(${id}, '${item.name}', ${item.price}, -1)">-</button>
-            <button onclick="updateCart(${id}, '${item.name}', ${item.price}, 1)">+</button>
-            <button onclick="deleteCartItem(${id})">Törlés</button>
-        `;
+                <div class="cart-item-top">
+                    ${item.name} - ${item.qty} x ${item.price} RON = ${subtotal} RON
+                    <div class="cart-buttons">
+                        <button onclick="updateCart(${id}, '${item.name}', ${item.price}, -1)">-</button>
+                        <span id="qty-${id}">${item.qty}</span>
+                        <button onclick="updateCart(${id}, '${item.name}', ${item.price}, 1)">+</button>
+                    </div>
+                </div>
+                <button class="delete-btn" onclick="deleteCartItem(${id})">Törlés</button>
+            `;
         cartList.appendChild(li);
     }
 
