@@ -59,6 +59,12 @@ li img {
     background-color: #f9f9f9;
 }
 
+.cart-item-name,
+.cart-item-subtotal,
+.cart-buttons {
+    margin-bottom: 5px;
+}
+
 .cart-item-top {
     display: flex;
     justify-content: space-between;
@@ -70,7 +76,6 @@ li img {
     display: flex;
     align-items: center;
     gap: 5px;
-    
 }
 
 .delete-btn {
