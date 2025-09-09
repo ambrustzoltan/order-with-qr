@@ -59,7 +59,8 @@
         const supabaseUrl = "https://ggfrpfpdtzxbrzzwbtpv.supabase.co";
         const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdnZnJwZnBkdHp4YnJ6endidHB2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc0MDc2NzYsImV4cCI6MjA3Mjk4MzY3Nn0.bfjwtlZ7It9Z_fFAIvVgSQ9NrkylgJqODIdkGTxBKnY";
         const db = supabase.createClient(supabaseUrl, supabaseKey);
-
+        
+        // Load all open orders
         async function loadOrders() {
             const { data, error } = await db
                 .from("orders")
@@ -100,13 +101,24 @@
             });
         }
 
-
+        // Status: 0 = open, 1 = done
         async function setStatus(orderId, status) {
-            const { error } = await db.from("orders").update({ status }).eq("id", orderId);
-            if (error) { console.error(error); alert("Hiba a státusz frissítésnél!"); return; }
+            let updateData = { status };
+
+            if (status === 1) {
+                updateData.closed_at = new Date().toISOString();
+            }
+
+            const { error } = await db.from("orders").update(updateData).eq("id", orderId);
+            if (error) {
+                console.error(error);
+                alert("Hiba a státusz frissítésnél!");
+                return;
+            }
             loadOrders();
         }
 
+        // Delete entire order
         async function deleteOrder(orderId) {
             if (!confirm("Biztosan törlöd a rendelést?")) return;
             const { error } = await db.from("orders").delete().eq("id", orderId);
@@ -114,6 +126,7 @@
             loadOrders();
         }
 
+        // Delete single item from order
         async function deleteItem(orderId, itemId) {
             const { data, error } = await db.from("orders").select("*").eq("id", orderId).single();
             if (error) { console.error(error); return; }
