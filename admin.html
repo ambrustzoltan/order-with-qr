@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="hu">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rendelések kezelése</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+        }
+
+        .order {
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .order h3 {
+            margin-top: 0;
+        }
+
+        ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        button {
+            margin: 3px;
+            padding: 5px 10px;
+        }
+
+        .status-done {
+            color: green;
+            font-weight: bold;
+        }
+
+        .status-open {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Admin – Rendelések</h1>
+    <div id="orders"></div>
+
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+    <script>
+        const supabaseUrl = "https://ggfrpfpdtzxbrzzwbtpv.supabase.co";
+        const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdnZnJwZnBkdHp4YnJ6endidHB2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc0MDc2NzYsImV4cCI6MjA3Mjk4MzY3Nn0.bfjwtlZ7It9Z_fFAIvVgSQ9NrkylgJqODIdkGTxBKnY";
+        const db = supabase.createClient(supabaseUrl, supabaseKey);
+
+        async function loadOrders() {
+            const { data, error } = await db
+                .from("orders")
+                .select("*")
+                .eq("status", 0)   // csak a folyamatban lévő rendeléseket kérjük le
+                .order("id", { ascending: true });
+
+            if (error) { console.error(error); return; }
+
+            const container = document.getElementById("orders");
+            container.innerHTML = "";
+
+            if (data.length === 0) {
+                container.innerHTML = "<p>Nincs aktív rendelés.</p>";
+                return;
+            }
+
+            data.forEach(order => {
+                const div = document.createElement("div");
+                div.className = "order";
+
+                div.innerHTML = `
+            <h3>Asztal ${order.table_number}</h3>
+            <p>Rendelés ID: ${order.id}</p>
+            <ul>
+                ${Object.values(order.items).map(it => `
+                    <li>
+                        ${it.name} – ${it.qty} x ${it.unit_price} RON = ${it.subtotal} RON
+                        <button onclick="deleteItem(${order.id}, ${it.id})">❌</button>
+                    </li>
+                `).join("")}
+            </ul>
+            <p><b>Összesen: ${order.total} RON</b></p>
+            <button onclick="setStatus(${order.id}, 1)">✅ Kiszolgálva</button>
+            <button onclick="deleteOrder(${order.id})">🗑️ Rendelés törlése</button>
+        `;
+                container.appendChild(div);
+            });
+        }
+
+
+        async function setStatus(orderId, status) {
+            const { error } = await db.from("orders").update({ status }).eq("id", orderId);
+            if (error) { console.error(error); alert("Hiba a státusz frissítésnél!"); return; }
+            loadOrders();
+        }
+
+        async function deleteOrder(orderId) {
+            if (!confirm("Biztosan törlöd a rendelést?")) return;
+            const { error } = await db.from("orders").delete().eq("id", orderId);
+            if (error) { console.error(error); alert("Hiba a rendelés törlésénél!"); return; }
+            loadOrders();
+        }
+
+        async function deleteItem(orderId, itemId) {
+            const { data, error } = await db.from("orders").select("*").eq("id", orderId).single();
+            if (error) { console.error(error); return; }
+
+            let updatedItems = { ...data.items };
+            delete updatedItems[itemId];
+
+            let newTotal = Object.values(updatedItems).reduce((sum, it) => sum + it.subtotal, 0);
+
+            const { error: updateError } = await db.from("orders").update({
+                items: updatedItems,
+                total: newTotal
+            }).eq("id", orderId);
+
+            if (updateError) { console.error(updateError); alert("Nem sikerült az item törlése!"); return; }
+            loadOrders();
+        }
+
+        loadOrders();
+    </script>
+</body>
+
+</html>
