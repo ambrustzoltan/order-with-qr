@@ -143,7 +143,7 @@ function renderCart() {
 
     let total = 0;
 
-    for (let id in cart) {
+    for (let id in cart) { // id = item id
         const item = cart[id];
         const subtotal = item.qty * item.price;
         total += subtotal;
@@ -195,14 +195,25 @@ async function placeOrder() {
 
     let total = Object.values(cart).reduce((sum, item) => sum + item.qty * item.price, 0);
 
+    let itemsForDb = {};
+    for (let id in cart) {
+        let item = cart[id];
+        itemsForDb[id] = {
+            name: item.name, // Item name
+            qty: item.qty, // Quantity
+            unit_price: item.price, // Price per unit
+            subtotal: item.qty * item.price // Subtotal for this item
+        };
+    }
+
     const { data, error } = await db
         .from("orders")
         .insert([
             {
-                table_number: parseInt(table),
-                items: cart,
-                total: total,
-                status: 0
+                table_number: parseInt(table), // Store table number as integer
+                items: itemsForDb,  // Store the entire cart object
+                total: total, // Store total amount
+                status: 0 // New order
             }
         ])
         .select(); // Return the inserted row(s)
@@ -210,14 +221,14 @@ async function placeOrder() {
 
     if (error) {
         console.error("Hiba:", error);
-        alert("❌ Nem sikerült elmenteni a rendelést!");
+        alert("❌ Nem sikerült elmenteni a rendelést!"); 
         return;
     }
 
-    // Ha sikerült menteni
+    // Success
     alert(`✅ Rendelés leadva!\nVégösszeg: ${total} RON\n\nAzonosító: ${data[0].id}`);
 
-    // Kosár ürítés
+    // Clear cart
     cart = {};
     renderMenu();
     renderCart();
