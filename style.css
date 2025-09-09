@@ -1,7 +1,7 @@
 body {
     font-family: Arial, sans-serif;
     padding: 20px;
-    max-width: 600px;
+    max-width: 1080px;
     margin: auto;
 }
 
@@ -20,8 +20,19 @@ ul {
 }
 
 li {
+    display: flex;
+    flex-direction: column; /* kép felül, szöveg alul */
+    align-items: center;    /* középre igazítás vízszintesen */
     margin-bottom: 10px;
 }
+
+li img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    margin-bottom: 5px; /* kis tér a kép és a szöveg között */
+}
+
 
 .container {
     display: flex;
