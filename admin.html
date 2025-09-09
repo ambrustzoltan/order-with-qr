@@ -64,7 +64,7 @@
             const { data, error } = await db
                 .from("orders")
                 .select("*")
-                .eq("status", 0)   // csak a folyamatban lévő rendeléseket kérjük le
+                .eq("status", 0)
                 .order("id", { ascending: true });
 
             if (error) { console.error(error); return; }
