@@ -171,13 +171,12 @@ async function placeOrder() {
         return;
     }
 
-    let total = Object.values(cart).reduce((sum, item) => sum + item.qty * item.price, 0);
 
-    // Prepare items for DB
-    let itemsForDb = {};
+    let newItems = {};
     for (let id in cart) {
         let item = cart[id];
-        itemsForDb[id] = {
+        newItems[id] = {
+            id: parseInt(id),
             name: item.name,
             qty: item.qty,
             unit_price: item.price,
@@ -185,7 +184,6 @@ async function placeOrder() {
         };
     }
 
-    // Check for existing open order for the table
     const { data: existing, error: fetchError } = await db
         .from("orders")
         .select("*")
@@ -193,15 +191,19 @@ async function placeOrder() {
         .eq("status", 0)
         .limit(1);
 
-    if (fetchError) {
-        console.error(fetchError);
-        alert("Hiba történt!");
-        return;
-    }
+    if (fetchError) { console.error(fetchError); alert("Hiba történt!"); return; }
 
-    // If exists, update it; else, create new
     if (existing.length > 0) {
-        let updatedItems = { ...existing[0].items, ...itemsForDb };
+        let updatedItems = { ...existing[0].items };
+        for (let id in newItems) {
+            if (updatedItems[id]) {
+                updatedItems[id].qty += newItems[id].qty;
+                updatedItems[id].subtotal = updatedItems[id].qty * updatedItems[id].unit_price;
+            } else {
+                updatedItems[id] = newItems[id];
+            }
+        }
+
         let updatedTotal = Object.values(updatedItems).reduce((sum, item) => sum + item.subtotal, 0);
 
         const { error: updateError } = await db
@@ -209,41 +211,35 @@ async function placeOrder() {
             .update({ items: updatedItems, total: updatedTotal })
             .eq("id", existing[0].id);
 
-        if (updateError) {
-            console.error(updateError);
-            alert("Nem sikerült frissíteni a rendelést!");
-            return;
-        }
+        if (updateError) { console.error(updateError); alert("Nem sikerült frissíteni a rendelést!"); return; }
 
         alert(`✅ Rendelés frissítve! Összesen: ${updatedTotal} RON`);
 
     } else {
+        let total = Object.values(newItems).reduce((sum, item) => sum + item.subtotal, 0);
+
         const { data, error } = await db
             .from("orders")
             .insert([
                 {
                     table_number: parseInt(table),
-                    items: itemsForDb,
+                    items: newItems,
                     total: total,
                     status: 0
                 }
             ])
             .select();
 
-        if (error) {
-            console.error(error);
-            alert("❌ Nem sikerült elmenteni a rendelést!");
-            return;
-        }
+        if (error) { console.error(error); alert("❌ Nem sikerült elmenteni a rendelést!"); return; }
 
         alert(`✅ Rendelés leadva! Összesen: ${total} RON`);
     }
 
-    // Clear cart after placing order
     cart = {};
     renderMenu();
     renderCart();
 }
+
 
 // ---- Init ----
 loadMenu();
