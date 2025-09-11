@@ -119,7 +119,7 @@ function renderMenuByCategory(type, subMenuName) {
 }
 
 function toggleCategoryMenu() {
-     const isOpen = categoryMenu.classList.contains('open');
+    const isOpen = categoryMenu.classList.contains('open');
     const cartElLocal = document.getElementById("cart-container");
 
     if (isOpen) {
@@ -313,7 +313,7 @@ async function placeOrder() {
         if (updateError) { console.error(updateError); alert("Nem sikerült frissíteni a rendelést!"); return; }
 
         alert(`✅ Rendelés frissítve! Összesen: ${updatedTotal} RON`);
-
+        clearCart();
     } else {
         let total = Object.values(newItems).reduce((sum, item) => sum + item.subtotal, 0);
 
@@ -331,10 +331,10 @@ async function placeOrder() {
         if (error) { console.error(error); alert("❌ Nem sikerült elmenteni a rendelést!"); return; }
 
         alert(`✅ Rendelés leadva! Összesen: ${total} RON`);
+        clearCart();
     }
 
     cart = {};
-    renderMenu();
     renderCart();
 }
 
