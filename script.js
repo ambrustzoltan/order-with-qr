@@ -11,62 +11,80 @@ let categories = { food: [], drink: [] };
 let cart = {};
 
 // ---- Menu load from DB ----
-async function loadMenu() {
-    const { data, error } = await db
-        .from('items')
-        .select(`
-            id,
-            name,
-            price,
-            img,
-            category_id,
-            description,
-            categories(name, type)
-        `)
-        .order('id');
+    async function loadMenu() {
+        const { data, error } = await db
+            .from('items')
+            .select(`id,name,price,img,category_id,description,categories(id,name,type)`)
+            .order('id');
 
-    if (error) {
-        console.error(error);
-        return;
+        if (error) { console.error(error); return; }
+
+        data.forEach(item => {
+            const type = item.categories.type;
+            let cat = categories[type].find(c => c.sub_menu === item.categories.name);
+            if (!cat) {
+                cat = { sub_menu: item.categories.name, id: item.categories.id, type: type, items: [] };
+                categories[type].push(cat);
+            }
+            cat.items.push({
+                id: item.id,
+                name: item.name,
+                price: item.price,
+                img: item.img,
+                description: item.description
+            });
+        });
+
+        renderCategoryMenu();
     }
 
-    data.forEach(item => {
-        const type = item.categories.type; // food/drink
-        let cat = categories[type].find(c => c.sub_menu === item.categories.name);
-        if (!cat) {
-            cat = { sub_menu: item.categories.name, items: [] };
-            categories[type].push(cat);
-        }
-        cat.items.push({
-            id: item.id,
-            name: item.name,
-            price: item.price,
-            img: item.img,
-            description: item.description
+    // ---- Render category menu ----
+    function renderCategoryMenu() {
+        const categoryList = document.getElementById("category-list");
+        categoryList.innerHTML = "";
+
+        ["food", "drink"].forEach(type => {
+            categories[type].forEach(cat => {
+                const li = document.createElement("li");
+                li.textContent = cat.sub_menu;
+                li.addEventListener("click", () => {
+                    renderMenuByCategory(cat.type, cat.sub_menu);
+                    if (window.innerWidth <= 768) categoryMenu.classList.remove("open");
+                });
+                categoryList.appendChild(li);
+            });
         });
-    });
 
-    renderMenu();
-}
+        openDefaultCategory();
+    }
 
-// ---- Menu render ----
-function renderMenu() {
-    const foodDiv = document.getElementById("food-list");
-    const drinkDiv = document.getElementById("drink-list");
+    // ---- Open default category (smallest id) ----
+    function openDefaultCategory() {
+        const allCats = [...categories.food, ...categories.drink];
+        if (!allCats.length) return;
+        const defaultCat = allCats.reduce((prev, curr) => (curr.id < prev.id ? curr : prev), allCats[0]);
+        renderMenuByCategory(defaultCat.type, defaultCat.sub_menu);
+    }
 
-    foodDiv.innerHTML = "";
-    drinkDiv.innerHTML = "";
+    // ---- Render menu by category ----
+    function renderMenuByCategory(type, subMenuName) {
+        const foodDiv = document.getElementById("food-list");
+        const drinkDiv = document.getElementById("drink-list");
+        foodDiv.innerHTML = "";
+        drinkDiv.innerHTML = "";
 
-    categories.food.forEach(cat => {
+        const selectedCat = categories[type].find(c => c.sub_menu === subMenuName);
+        if (!selectedCat) return;
+
         const h3 = document.createElement("h3");
-        h3.textContent = cat.sub_menu;
-        foodDiv.appendChild(h3);
+        h3.textContent = selectedCat.sub_menu;
         const ul = document.createElement("ul");
-        cat.items.forEach(item => {
+
+        selectedCat.items.forEach(item => {
             const li = document.createElement("li");
             li.innerHTML = `
                 <div class="item-wrapper">
-                    ${item.img ? `<img src="${item.img}" alt="${item.name}">` : ""}
+                    ${item.img ? `<img src="${item.img}" alt="${item.name}" width="80">` : ""}
                     <div class="item-info">
                         <div class="item-top">
                             <div class="item-name-price">
@@ -86,42 +104,10 @@ function renderMenu() {
             `;
             ul.appendChild(li);
         });
-        foodDiv.appendChild(ul);
-    });
 
-    categories.drink.forEach(cat => {
-        const h3 = document.createElement("h3");
-        h3.textContent = cat.sub_menu;
-        drinkDiv.appendChild(h3);
-        const ul = document.createElement("ul");
-        cat.items.forEach(item => {
-            const li = document.createElement("li");
-            li.innerHTML = `
-                <div class="item-wrapper">
-                    ${item.img ? `<img src="${item.img}" alt="${item.name}">` : ""}
-                    <div class="item-info">
-                        <div class="item-top">
-                            <div class="item-name-price">
-                                <span class="item-name">${item.name}</span>
-                                <span class="item-price">${item.price} RON</span>
-                            </div>
-                            <div class="item-qty-buttons">
-                                <button onclick="updateCart(${item.id}, '${item.name}', ${item.price}, -1)">-</button>
-                                <span id="menu-qty-${item.id}">0</span>
-                                <button onclick="updateCart(${item.id}, '${item.name}', ${item.price}, 1)">+</button>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="item-description">${item.description || ""}</div>
-                    </div>
-                </div>
-            `;
-            ul.appendChild(li);
-        });
-        drinkDiv.appendChild(ul);
-    });
-}
-
+        if (type === "food") foodDiv.appendChild(h3), foodDiv.appendChild(ul);
+        else drinkDiv.appendChild(h3), drinkDiv.appendChild(ul);
+    }
 // ---- Cart update ----
 function updateCart(id, name, price, change, event) {
     if (event) event.stopPropagation();
