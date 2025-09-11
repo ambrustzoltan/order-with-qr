@@ -8,7 +8,8 @@ body {
     background-color: #CEAC87;
 }
 
-h1, h2 {
+h1,
+h2 {
     color: #292325;
     margin-top: 0;
 }
@@ -230,7 +231,7 @@ hr {
 #category-menu {
     background: white;
     border-radius: 10px;
-    box-shadow: -2px 0 10px rgba(0,0,0,0.2);
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
     padding: 20px;
     overflow-y: auto;
     box-sizing: border-box;
@@ -245,12 +246,12 @@ hr {
 }
 
 #category-menu li {
-    background: rgba(255,255,255,0.9);
+    background: rgba(255, 255, 255, 0.9);
     padding: 8px;
     margin-bottom: 10px;
     border-radius: 10px;
     cursor: pointer;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
     transition: background 0.2s ease;
 }
 
@@ -267,19 +268,46 @@ hr {
     z-index: 1002;
     background: #222;
     color: white;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    font-size: 24px;
-    align-items: center;
-    justify-content: center;
+    padding: 10px 12px;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
     transition: opacity 0.3s ease;
 }
 
 .category-toggle.hidden {
     opacity: 0;
     pointer-events: none;
+}
+
+/* Hamburger icon */
+.hamburger {
+    width: 18px;
+    height: 2px;
+    background: white;
+    position: relative;
+}
+
+.hamburger::before,
+.hamburger::after {
+    content: '';
+    position: absolute;
+    width: 18px;
+    height: 2px;
+    background: white;
+    left: 0;
+}
+
+.hamburger::before {
+    top: -6px;
+}
+
+.hamburger::after {
+    top: 6px;
 }
 
 /* ---- Responsive ---- */
@@ -292,18 +320,18 @@ hr {
     #category-menu {
         position: fixed;
         top: 0;
-        left: -100%; /* teljesen kívül, semmi se lógjon be */
+        left: -100%;
         width: 70%;
         max-width: 250px;
         height: 100%;
         padding: 20px;
-        box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
         overflow-y: auto;
         transform: translateX(0);
     }
 
     #category-menu.open {
-        left: 0; /* overlay teljesen belülre csúszik */
+        left: 0;
     }
 
     .category-toggle {
@@ -342,14 +370,20 @@ hr {
     }
 
     #category-menu {
-        position: relative;
-        left: 0;
+        position: fixed;
+        top: 20px;
+        left: -250px;
         width: 200px;
         height: auto;
-        box-shadow: none;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+        transition: left 0.3s ease;
+    }
+
+    #category-menu.open {
+        left: 20px;
     }
 
     .category-toggle {
-        display: none;
+        display: flex
     }
 }

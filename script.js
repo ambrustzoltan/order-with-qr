@@ -167,6 +167,34 @@ function updateCartCount() {
     }
 }
 
+function toggleCategoryMenu() {
+    const isOpen = categoryMenu.classList.contains('open');
+    if (isOpen) {
+        categoryMenu.classList.remove('open');
+        categoryToggle.classList.remove('hidden');
+        document.removeEventListener('click', outsideClickListener);
+    } else {
+        categoryMenu.classList.add('open');
+        categoryToggle.classList.add('hidden');
+        setTimeout(() => { // késleltetés, hogy azonnal ne záródjon
+            document.addEventListener('click', outsideClickListener);
+        }, 0);
+    }
+}
+
+// Kattintás kívülre
+function outsideClickListener(e) {
+    if (!categoryMenu.contains(e.target) && !categoryToggle.contains(e.target)) {
+        toggleCategoryMenu();
+    }
+}
+
+// Toggle gomb esemény
+categoryToggle.addEventListener('click', (e) => {
+    e.stopPropagation(); // gomb kattintás ne zárja azonnal
+    toggleCategoryMenu();
+});
+
 function deleteCartItem(id) { delete cart[id]; renderCart(); updateCartCount(); }
 function clearCart() { cart = {}; renderCart(); updateCartCount(); }
 function placeOrder() { if (!Object.keys(cart).length) alert("A kosár üres!"); else alert("Rendelés leadva!"); }
@@ -174,6 +202,7 @@ function placeOrder() { if (!Object.keys(cart).length) alert("A kosár üres!");
 // ---- Mobile menu toggle ----
 const mobileMenuBtn = document.getElementById("mobile-menu-toggle");
 const categoryMenu = document.getElementById("category-menu");
+const categoryToggle = document.querySelector('.category-toggle');
 mobileMenuBtn.addEventListener("click", () => categoryMenu.classList.toggle("open"));
 
 // ---- Cart toggle ----
