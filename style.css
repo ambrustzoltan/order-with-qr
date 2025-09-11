@@ -152,11 +152,6 @@ li img {
     right: 0;
 }
 
-#cart-container.show {
-    transform: translateY(0);
-    opacity: 1;
-}
-
 @media (max-width: 768px) {
     .container {
         flex-direction: column;

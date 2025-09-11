@@ -144,15 +144,17 @@ function renderCart() {
 
 
 // ---- Toggle cart ----
-function toggleCart(event) {
-    event.stopPropagation(); 
-    const cartEl = document.getElementById("cart-container");
-    cartEl.classList.toggle("open");
-}
 
-document.addEventListener("click", function(e) {
-    const cartEl = document.getElementById("cart-container");
-    const cartBtn = document.getElementById("cart-button");
+const cartBtn = document.getElementById("cart-button");
+const cartEl = document.getElementById("cart-container");
+
+cartBtn.addEventListener("click", function (e) {
+    e.stopPropagation();
+    cartEl.classList.toggle("open");
+    cartEl.classList.remove("hidden");
+});
+
+document.addEventListener("click", function (e) {
     if (!cartEl.contains(e.target) && !cartBtn.contains(e.target)) {
         cartEl.classList.remove("open");
     }
