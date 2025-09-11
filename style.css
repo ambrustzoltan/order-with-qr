@@ -94,6 +94,12 @@ li img {
     cursor: pointer;
 }
 
+#cart {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px 0;
+}
+
 #cart-button {
     position: fixed;
     top: 20px;
@@ -141,7 +147,7 @@ li img {
     width: 350px;
     height: 100%;
     background: white;
-    box-shadow: -2px 0 10px rgba(0,0,0,0.2);
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
     padding: 20px;
     overflow-y: auto;
     box-sizing: border-box;
@@ -154,13 +160,16 @@ li img {
     overflow-y: auto;
 }
 
-#cart-container .cart-actions {
-    position: sticky;
-    bottom: 0;
-    background: white;
-    padding-top: 10px;
+#cart-footer {
+    padding: 10px 0;
+    border-top: 1px solid #ccc;
     display: flex;
-    gap: 10px;
+    flex-direction: column;
+    gap: 5px;
+}
+
+#cart-footer button {
+    width: 100%;
 }
 
 #cart-container.open {

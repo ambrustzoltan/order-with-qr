@@ -144,7 +144,10 @@ function renderCart() {
         cartList.appendChild(li);
     }
 
-    document.getElementById("total").textContent = "Összesen: " + total + " RON";
+    const cartFooter = document.getElementById("cart-footer");
+    if (cartFooter) {
+        cartFooter.querySelector("#total").textContent = "Összesen: " + total + " RON";
+    }
 }
 
 
