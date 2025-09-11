@@ -241,11 +241,6 @@ li {
         margin-top: 5px;
     }
 
-    .item-wrapper {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
     .item-description {
         max-height: 80px;
         overflow-y: auto;
