@@ -20,6 +20,7 @@ async function loadMenu() {
             price,
             img,
             category_id,
+            description,
             categories(name, type)
         `)
         .order('id');
