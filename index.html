@@ -18,13 +18,11 @@
         </div>
     </div>
 
-    <!-- Kosár gomb -->
-    <button id="cart-button" onclick="toggleCart()">
+    <button id="cart-button" onclick="toggleCart(event)">
         🛒
         <span id="cart-count" class="hidden">0</span>
     </button>
 
-    <!-- Kosár panel -->
     <div id="cart-container" class="hidden">
         <h2>Kosár</h2>
         <ul id="cart"></ul>
