@@ -8,8 +8,7 @@ body {
     background-color: #CEAC87;
 }
 
-h1,
-h2 {
+h1, h2 {
     color: #292325;
     margin-top: 0;
 }
@@ -162,7 +161,7 @@ hr {
     cursor: pointer;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     z-index: 1000;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
 #cart-count {
@@ -229,11 +228,14 @@ hr {
 
 /* ---- Category menu ---- */
 #category-menu {
-    width: 200px;
-    background: rgba(255, 255, 255, 0.9);
-    padding: 10px;
+    background: white;
     border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: -2px 0 10px rgba(0,0,0,0.2);
+    padding: 20px;
+    overflow-y: auto;
+    box-sizing: border-box;
+    transition: left 0.3s ease;
+    z-index: 999;
 }
 
 #category-menu ul {
@@ -243,20 +245,44 @@ hr {
 }
 
 #category-menu li {
+    background: rgba(255,255,255,0.9);
     padding: 8px;
-    margin-bottom: 5px;
-    background: #fff;
-    border-radius: 6px;
+    margin-bottom: 10px;
+    border-radius: 10px;
     cursor: pointer;
-    transition: background 0.2s;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    transition: background 0.2s ease;
 }
 
 #category-menu li:hover {
     background: #eee;
 }
 
+/* ---- Category toggle button ---- */
+.category-toggle {
+    display: none;
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1002;
+    background: #222;
+    color: white;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 24px;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
 /* ---- Responsive ---- */
 @media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        gap: 10px;
+    }
 
     #category-menu {
         position: fixed;
@@ -265,39 +291,22 @@ hr {
         width: 70%;
         max-width: 250px;
         height: 100%;
-        z-index: 1001;
-        background: rgba(255, 255, 255, 0.95);
-        transition: left 0.3s ease;
-        overflow-y: auto;
-        box-shadow: 2px 0 8px rgba(0, 0, 0, 0.3);
         padding: 20px;
+        box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+        overflow-y: auto;
     }
 
     #category-menu.open {
         left: 0;
     }
 
-    .mobile-only {
-        display: block;
-        position: fixed;
-        top: 20px;
-        left: 20px;
-        z-index: 1002;
-        background: #222;
-        color: white;
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        font-size: 24px;
+    .category-toggle {
         display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
     }
 
-    .container {
-        flex-direction: column;
-        gap: 10px;
+    .category-toggle.hidden {
+        opacity: 0;
+        pointer-events: none;
     }
 
     #cart-container {
@@ -321,11 +330,6 @@ hr {
 }
 
 @media (min-width: 769px) {
-    .mobile-only {
-        display: none;
-
-    }
-
     .container {
         display: flex;
         gap: 20px;
@@ -337,5 +341,9 @@ hr {
         width: 200px;
         height: auto;
         box-shadow: none;
+    }
+
+    .category-toggle {
+        display: none;
     }
 }
