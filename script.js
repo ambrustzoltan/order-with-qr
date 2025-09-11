@@ -102,19 +102,17 @@ function renderMenu() {
 function updateCart(id, name, price, change) {
     if (!cart[id]) cart[id] = { name, qty: 0, price };
     cart[id].qty += change;
+
     if (cart[id].qty <= 0) delete cart[id];
-
-    // frissítjük a menü oldali span-t (ha van)
     const menuQty = document.getElementById("menu-qty-" + id);
-    if (menuQty) menuQty.textContent = cart[id] ? cart[id].qty : 0;
-
-    // frissítjük a kosár oldali span-t (ha van)
+    if (menuQty) menuQty.textContent = cart[id]?.qty || 0;
     const cartQty = document.getElementById("cart-qty-" + id);
-    if (cartQty) cartQty.textContent = cart[id] ? cart[id].qty : 0;
+    if (cartQty) cartQty.textContent = cart[id]?.qty || 0;
 
     renderCart();
     updateCartCount();
 }
+
 
 // ---- Render cart ----
 function renderCart() {
@@ -165,10 +163,10 @@ function updateCartCount() {
         badge.textContent = count;
         badge.classList.remove("hidden");
     } else {
+        badge.textContent = 0;
         badge.classList.add("hidden");
     }
 }
-
 
 // ---- Cart item delete & clear ----
 function deleteCartItem(id) {
