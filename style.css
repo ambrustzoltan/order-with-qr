@@ -1,3 +1,4 @@
+/* ---- Alap stílus ---- */
 body {
     font-family: Arial, sans-serif;
     color: #292325;
@@ -10,10 +11,23 @@ body {
 h1,
 h2 {
     color: #292325;
+    margin-top: 0;
 }
 
 button {
     margin-left: 10px;
+    background-color: #292325;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 10px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.2s ease;
+}
+
+button:hover {
+    background-color: #3e3a3c;
 }
 
 ul {
@@ -26,6 +40,10 @@ li {
     flex-direction: column;
     align-items: center;
     margin-bottom: 10px;
+    background: rgba(255,255,255,0.7);
+    padding: 8px;
+    border-radius: 10px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
 }
 
 li img {
@@ -33,6 +51,7 @@ li img {
     height: 50px;
     object-fit: cover;
     margin-bottom: 5px;
+    border-radius: 6px;
 }
 
 .item-row {
@@ -41,8 +60,7 @@ li img {
     gap: 5px;
 }
 
-
-
+/* ---- Layout ---- */
 .container {
     display: flex;
     gap: 20px;
@@ -60,13 +78,6 @@ li img {
     margin-bottom: 5px;
 }
 
-.cart-item-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 5px;
-}
-
 .cart-buttons {
     display: flex;
     align-items: center;
@@ -77,9 +88,16 @@ li img {
     display: block;
     margin-top: 5px;
     background-color: #ff4d4d;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    border: none;
 }
 
-  #cart-button {
+/* ---- Kosár ikon + badge ---- */
+#cart-button {
     position: fixed;
     bottom: 20px;
     right: 20px;
@@ -96,9 +114,9 @@ li img {
     cursor: pointer;
     box-shadow: 0 2px 8px rgba(0,0,0,0.2);
     z-index: 1000;
-  }
+}
 
-  #cart-count {
+#cart-count {
     position: absolute;
     top: 8px;
     right: 8px;
@@ -112,13 +130,14 @@ li img {
     display: flex;
     align-items: center;
     justify-content: center;
-  }
+}
 
-  .hidden {
+.hidden {
     display: none;
-  }
+}
 
-  #cart-container {
+/* ---- Kosár panel ---- */
+#cart-container {
     position: fixed;
     bottom: 0;
     right: 0;
@@ -130,9 +149,19 @@ li img {
     overflow-y: auto;
     box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
     z-index: 999;
-  }
-  
-/* --- Mobile --- */
+
+    /* Animáció kezdeti állapot */
+    transform: translateY(100%);
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+#cart-container.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* --- Mobilbarát módosítások --- */
 @media (max-width: 768px) {
     .container {
         flex-direction: column;

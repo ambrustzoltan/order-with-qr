@@ -16,20 +16,23 @@
             <div id="food-list"></div>
             <div id="drink-list"></div>
         </div>
-
-        <button id="cart-button" onclick="toggleCart()">
-            🛒
-            <span id="cart-count" class="hidden">0</span>
-        </button>
-
-        <div id="cart-container" class="hidden">
-            <h2>Kosár</h2>
-            <ul id="cart"></ul>
-            <h3 id="total">Összesen: 0 RON</h3>
-            <button onclick="placeOrder()">Rendelés leadása</button>
-            <button onclick="clearCart()">Kosár ürítése</button>
-        </div>
     </div>
+
+    <!-- Kosár gomb -->
+    <button id="cart-button" onclick="toggleCart()">
+        🛒
+        <span id="cart-count" class="hidden">0</span>
+    </button>
+
+    <!-- Kosár panel -->
+    <div id="cart-container" class="hidden">
+        <h2>Kosár</h2>
+        <ul id="cart"></ul>
+        <h3 id="total">Összesen: 0 RON</h3>
+        <button onclick="placeOrder()">Rendelés leadása</button>
+        <button onclick="clearCart()">Kosár ürítése</button>
+    </div>
+
 
     <!-- Supabase JS SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
