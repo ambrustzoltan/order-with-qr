@@ -270,7 +270,6 @@ hr {
 /* ---- Category toggle button ---- */
 .category-toggle {
     display: none;
-    position: fixed;
     top: 20px;
     left: 20px;
     z-index: 1002;
