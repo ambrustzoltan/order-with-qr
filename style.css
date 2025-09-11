@@ -40,10 +40,10 @@ li {
     flex-direction: column;
     align-items: center;
     margin-bottom: 10px;
-    background: rgba(255,255,255,0.7);
+    background: rgba(255, 255, 255, 0.7);
     padding: 8px;
     border-radius: 10px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
 
 li img {
@@ -109,7 +109,7 @@ li img {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     z-index: 1000;
     transition: transform 0.3s ease;
 }
@@ -137,15 +137,15 @@ li img {
 #cart-container {
     position: fixed;
     top: 0;
-    right: -400px; /* alapból el van rejtve jobbról */
+    right: -400px;
     width: 350px;
     height: 100%;
     background: white;
-    box-shadow: -2px 0 10px rgba(0,0,0,0.2);
+    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
     padding: 20px;
     overflow-y: auto;
     z-index: 999;
-    transition: right 0.3s ease; /* animáció */
+    transition: right 0.3s ease;
 }
 
 #cart-container.open {
@@ -164,9 +164,7 @@ li img {
     }
 
     #cart-container {
-        flex: 1;
         width: 90%;
-        box-sizing: border-box;
     }
 
     button {

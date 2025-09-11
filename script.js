@@ -144,12 +144,13 @@ function renderCart() {
 
 
 // ---- Toggle cart ----
-function toggleCart() {
+function toggleCart(event) {
+    event.stopPropagation(); 
     const cartEl = document.getElementById("cart-container");
     cartEl.classList.toggle("open");
 }
 
-document.addEventListener("click", function (e) {
+document.addEventListener("click", function(e) {
     const cartEl = document.getElementById("cart-container");
     const cartBtn = document.getElementById("cart-button");
     if (!cartEl.contains(e.target) && !cartBtn.contains(e.target)) {
