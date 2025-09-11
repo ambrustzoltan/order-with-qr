@@ -67,7 +67,7 @@ function renderMenu() {
                 <div class="item-row">
                     <span>${item.name} - ${item.price} RON</span>
                     <button onclick="updateCart(${item.id}, '${item.name}', ${item.price}, -1)">-</button>
-                    <span id="qty-${item.id}">0</span>
+                    <span id="menu-qty-${item.id}">0</span>
                     <button onclick="updateCart(${item.id}, '${item.name}', ${item.price}, 1)">+</button>
                 </div>
             `;
@@ -88,7 +88,7 @@ function renderMenu() {
                 <div class="item-row">
                     <span>${item.name} - ${item.price} RON</span>
                     <button onclick="updateCart(${item.id}, '${item.name}', ${item.price}, -1)">-</button>
-                    <span id="qty-${item.id}">0</span>
+                    <span id="menu-qty-${item.id}">0</span>
                     <button onclick="updateCart(${item.id}, '${item.name}', ${item.price}, 1)">+</button>
                 </div>
             `;
@@ -104,8 +104,13 @@ function updateCart(id, name, price, change) {
     cart[id].qty += change;
     if (cart[id].qty <= 0) delete cart[id];
 
-    const qtySpan = document.getElementById("qty-" + id);
-    if (qtySpan) qtySpan.textContent = cart[id] ? cart[id].qty : 0;
+    // frissítjük a menü oldali span-t (ha van)
+    const menuQty = document.getElementById("menu-qty-" + id);
+    if (menuQty) menuQty.textContent = cart[id] ? cart[id].qty : 0;
+
+    // frissítjük a kosár oldali span-t (ha van)
+    const cartQty = document.getElementById("cart-qty-" + id);
+    if (cartQty) cartQty.textContent = cart[id] ? cart[id].qty : 0;
 
     renderCart();
     updateCartCount();
@@ -117,13 +122,10 @@ function renderCart() {
     cartList.innerHTML = "";
 
     let total = 0;
-    let itemCount = 0;
-
     for (let id in cart) {
         const item = cart[id];
         const subtotal = item.qty * item.price;
         total += subtotal;
-        itemCount += item.qty;
 
         const li = document.createElement("li");
         li.innerHTML = `
@@ -131,7 +133,7 @@ function renderCart() {
             <div class="cart-item-subtotal">${item.qty} x ${item.price} RON = ${subtotal} RON</div>
             <div class="cart-buttons">
                 <button onclick="updateCart(${id}, '${item.name}', ${item.price}, -1)">-</button>
-                <span id="qty-${id}">${item.qty}</span>
+                <span id="cart-qty-${id}">${item.qty}</span>
                 <button onclick="updateCart(${id}, '${item.name}', ${item.price}, 1)">+</button>
             </div>
             <button class="delete-btn" onclick="deleteCartItem(${id})">Törlés</button>
@@ -140,9 +142,8 @@ function renderCart() {
     }
 
     document.getElementById("total").textContent = "Összesen: " + total + " RON";
-
-    updateCartCount(itemCount);
 }
+
 
 // ---- Toggle cart (animációval) ----
 function toggleCart() {
@@ -157,7 +158,8 @@ function toggleCart() {
 }
 
 // ---- Badge update ----
-function updateCartCount(count) {
+function updateCartCount() {
+    const count = Object.values(cart).reduce((sum, item) => sum + (item.qty || 0), 0);
     const badge = document.getElementById("cart-count");
     if (count > 0) {
         badge.textContent = count;
@@ -167,19 +169,23 @@ function updateCartCount(count) {
     }
 }
 
+
 // ---- Cart item delete & clear ----
 function deleteCartItem(id) {
     delete cart[id];
-    const qtySpan = document.getElementById("qty-" + id);
-    if (qtySpan) qtySpan.textContent = 0;
+
+    const menuQty = document.getElementById("menu-qty-" + id);
+    if (menuQty) menuQty.textContent = 0;
+
     renderCart();
     updateCartCount();
 }
 
+
 function clearCart() {
     for (let id in cart) {
-        const qtySpan = document.getElementById("qty-" + id);
-        if (qtySpan) qtySpan.textContent = 0;
+        const menuQty = document.getElementById("menu-qty-" + id);
+        if (menuQty) menuQty.textContent = 0;
     }
     cart = {};
     renderCart();
