@@ -368,33 +368,3 @@ hr {
         overflow-y: auto;
     }
 }
-
-@media (min-width: 769px) {
-    .container {
-        display: flex;
-        gap: 20px;
-    }
-
-    #category-menu {
-        width: 90%;
-        height: 90%;
-        left: -95%;
-        border-radius: 10px;
-        top: 5%;
-        padding: 10px;
-    }
-
-    #category-menu.open {
-        left: 20px;
-    }
-
-    .category-toggle {
-        top: 20px;
-        display: flex
-    }
-
-    .category-toggle.hidden {
-        opacity: 0;
-        pointer-events: none;
-    }
-}
