@@ -234,8 +234,8 @@ hr {
     padding: 20px;
     overflow-y: auto;
     box-sizing: border-box;
-    transition: left 0.3s ease;
-    z-index: 999;
+    transition: transform 0.3s ease;
+    z-index: 1001;
 }
 
 #category-menu ul {
@@ -277,6 +277,11 @@ hr {
     transition: opacity 0.3s ease;
 }
 
+.category-toggle.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
 /* ---- Responsive ---- */
 @media (max-width: 768px) {
     .container {
@@ -287,17 +292,18 @@ hr {
     #category-menu {
         position: fixed;
         top: 0;
-        left: -250px;
+        left: -100%; /* teljesen kívül, semmi se lógjon be */
         width: 70%;
         max-width: 250px;
         height: 100%;
         padding: 20px;
         box-shadow: 2px 0 10px rgba(0,0,0,0.3);
         overflow-y: auto;
+        transform: translateX(0);
     }
 
     #category-menu.open {
-        left: 0;
+        left: 0; /* overlay teljesen belülre csúszik */
     }
 
     .category-toggle {
