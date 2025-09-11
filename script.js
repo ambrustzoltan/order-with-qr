@@ -21,7 +21,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const cartBtn = document.getElementById("cart-button");
     const cartEl = document.getElementById("cart-container");
 
-    // ---- Menu load from DB ----
+    // ---- Load menu from DB ----
     async function loadMenu() {
         const { data, error } = await db
             .from('items')
@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const type = item.categories.type;
             let cat = categories[type].find(c => c.sub_menu === item.categories.name);
             if (!cat) {
-                cat = { sub_menu: item.categories.name, id: item.categories.id, type: type, items: [] };
+                cat = { sub_menu: item.categories.name, id: item.categories.id, type, items: [] };
                 categories[type].push(cat);
             }
             cat.items.push({
@@ -61,6 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 li.addEventListener("click", () => {
                     renderMenuByCategory(cat.type, cat.sub_menu);
                     if (window.innerWidth <= 768) categoryMenu.classList.remove("open");
+                    categoryToggle.classList.remove('hidden');
                 });
                 categoryList.appendChild(li);
             });
@@ -137,6 +138,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const cartList = document.getElementById("cart");
         cartList.innerHTML = "";
         let total = 0;
+
         for (let id in cart) {
             const item = cart[id];
             const subtotal = item.qty * item.price;
@@ -172,7 +174,67 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function deleteCartItem(id) { delete cart[id]; renderCart(); updateCartCount(); }
     function clearCart() { cart = {}; renderCart(); updateCartCount(); }
-    function placeOrder() { if (!Object.keys(cart).length) alert("A kosár üres!"); else alert("Rendelés leadva!"); }
+
+    // ---- Place order ----
+    async function placeOrder() {
+        if (!Object.keys(cart).length) { alert("A kosár üres!"); return; }
+
+        let newItems = {};
+        for (let id in cart) {
+            const item = cart[id];
+            newItems[id] = {
+                name: item.name,
+                qty: item.qty,
+                unit_price: item.price,
+                subtotal: item.qty * item.price
+            };
+        }
+
+        const { data: existing, error: fetchError } = await db
+            .from("orders")
+            .select("*")
+            .eq("table_number", parseInt(table))
+            .eq("status", 0)
+            .limit(1);
+
+        if (fetchError) { console.error(fetchError); alert("Hiba történt!"); return; }
+
+        if (existing.length > 0) {
+            let updatedItems = { ...existing[0].items };
+            for (let id in newItems) {
+                if (updatedItems[id]) {
+                    updatedItems[id].qty += newItems[id].qty;
+                    updatedItems[id].subtotal = updatedItems[id].qty * updatedItems[id].unit_price;
+                } else {
+                    updatedItems[id] = newItems[id];
+                }
+            }
+            let updatedTotal = Object.values(updatedItems).reduce((sum, item) => sum + item.subtotal, 0);
+
+            const { error: updateError } = await db
+                .from("orders")
+                .update({ items: updatedItems, total: updatedTotal })
+                .eq("id", existing[0].id);
+
+            if (updateError) { console.error(updateError); alert("Nem sikerült frissíteni a rendelést!"); return; }
+
+            alert(`✅ Rendelés frissítve! Összesen: ${updatedTotal} RON`);
+        } else {
+            let total = Object.values(newItems).reduce((sum, item) => sum + item.subtotal, 0);
+
+            const { error } = await db
+                .from("orders")
+                .insert([{ table_number: parseInt(table), items: newItems, total, status: 0 }]);
+
+            if (error) { console.error(error); alert("❌ Nem sikerült elmenteni a rendelést!"); return; }
+
+            alert(`✅ Rendelés leadva! Összesen: ${total} RON`);
+        }
+
+        cart = {};
+        renderMenu();
+        renderCart();
+    }
 
     // ---- Category menu toggle ----
     function toggleCategoryMenu() {
@@ -189,19 +251,20 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function outsideClickListener(e) {
-        if (!categoryMenu.contains(e.target) && !categoryToggle.contains(e.target)) {
-            toggleCategoryMenu();
-        }
+        if (!categoryMenu.contains(e.target) && !categoryToggle.contains(e.target)) toggleCategoryMenu();
     }
 
-    categoryToggle.addEventListener('click', e => {
-        e.stopPropagation();
-        toggleCategoryMenu();
-    });
+    categoryToggle.addEventListener('click', e => { e.stopPropagation(); toggleCategoryMenu(); });
 
     // ---- Cart toggle ----
     cartBtn.addEventListener("click", () => cartEl.classList.toggle("open"));
 
     // ---- Load menu ----
     loadMenu();
+
+    // ---- Expose functions globally for inline buttons ----
+    window.updateCart = updateCart;
+    window.placeOrder = placeOrder;
+    window.clearCart = clearCart;
+    window.deleteCartItem = deleteCartItem;
 });
