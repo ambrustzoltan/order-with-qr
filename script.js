@@ -116,11 +116,11 @@ function toggleCategoryMenu() {
     const isOpen = categoryMenu.classList.contains('open');
     if (isOpen) {
         categoryMenu.classList.remove('open');
-        categoryToggle.classList.remove('hidden');
+  //      categoryToggle.classList.remove('hidden');
         document.removeEventListener('click', outsideClickListener);
     } else {
         categoryMenu.classList.add('open');
-        categoryToggle.classList.add('hidden');
+   //     categoryToggle.classList.add('hidden');
         setTimeout(() => { document.addEventListener('click', outsideClickListener); }, 0);
     }
 }
