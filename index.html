@@ -4,28 +4,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QR Éttermi Rendelő</title>
-    <link rel="stylesheet" href="style.css">
+    <title>QR Demo Éttermi Rendelő</title>
     <link href="https://fonts.googleapis.com/css2?family=Rubik+Dirt&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-    <h1 id="table-header"></h1>
+    <header>
+        <h1 id="table-header"></h1>
+        <button id="mobile-menu-toggle" class="mobile-only">☰ Menü</button>
+    </header>
 
-    <div class="container">
-        <aside id="category-menu">
-            <h2>Kategóriák</h2>
-            <ul id="category-list"></ul>
-        </aside>
+    <aside id="category-menu">
+        <ul id="category-list"></ul>
+    </aside>
 
-        <main id="menu">
+    <main class="container">
+        <div id="menu">
             <div id="food-list"></div>
             <div id="drink-list"></div>
-        </main>
-    </div>
+        </div>
+    </main>
 
     <button id="cart-button">
-        🛒 <span id="cart-count" class="hidden">0</span>
+        🛒<span id="cart-count" class="hidden">0</span>
     </button>
 
     <div id="cart-container" class="hidden">
@@ -33,11 +35,10 @@
         <div id="cart-footer">
             <h3 id="total">Összesen: 0 RON</h3>
             <button onclick="placeOrder()">Rendelés leadása</button>
-            <button onclick="clearCart(event)">Kosár ürítése</button>
+            <button onclick="clearCart()">Kosár ürítése</button>
         </div>
     </div>
 
-    <!-- Supabase JS SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <script src="script.js"></script>
 </body>

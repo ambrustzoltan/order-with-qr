@@ -21,7 +21,7 @@ async function loadMenu() {
             img,
             category_id,
             description,
-            categories(name, type)
+            categories(id, name, type)
         `)
         .order('id');
 
@@ -31,7 +31,7 @@ async function loadMenu() {
         const type = item.categories.type;
         let cat = categories[type].find(c => c.sub_menu === item.categories.name);
         if (!cat) {
-            cat = { sub_menu: item.categories.name, items: [] };
+            cat = { sub_menu: item.categories.name, id: item.categories.id, type: type, items: [] };
             categories[type].push(cat);
         }
         cat.items.push({
@@ -56,11 +56,22 @@ function renderCategoryMenu() {
             const li = document.createElement("li");
             li.textContent = cat.sub_menu;
             li.addEventListener("click", () => {
-                renderMenuByCategory(type, cat.sub_menu);
+                renderMenuByCategory(cat.type, cat.sub_menu);
+                if (window.innerWidth <= 768) categoryMenu.classList.remove("open");
             });
             categoryList.appendChild(li);
         });
     });
+
+    openDefaultCategory();
+}
+
+// ---- Open default category (smallest id) ----
+function openDefaultCategory() {
+    const allCats = [...categories.food, ...categories.drink];
+    if (!allCats.length) return;
+    const defaultCat = allCats.reduce((prev, curr) => (curr.id < prev.id ? curr : prev), allCats[0]);
+    renderMenuByCategory(defaultCat.type, defaultCat.sub_menu);
 }
 
 // ---- Render menu by category ----
@@ -94,7 +105,7 @@ function renderMenuByCategory(type, subMenuName) {
                             <button onclick="updateCart(${item.id}, '${item.name}', ${item.price}, 1)">+</button>
                         </div>
                     </div>
-                    <hr style="border:none; height:1px; background-color:#ccc; margin:8px 0;">
+                    <hr>
                     <div class="item-description">${item.description || ""}</div>
                 </div>
             </div>
@@ -156,29 +167,19 @@ function updateCartCount() {
     }
 }
 
-function deleteCartItem(id) {
-    delete cart[id];
-    renderCart();
-    updateCartCount();
-}
+function deleteCartItem(id) { delete cart[id]; renderCart(); updateCartCount(); }
+function clearCart() { cart = {}; renderCart(); updateCartCount(); }
+function placeOrder() { if (!Object.keys(cart).length) alert("A kosár üres!"); else alert("Rendelés leadva!"); }
 
-function clearCart(event) {
-    cart = {};
-    renderCart();
-    updateCartCount();
-}
+// ---- Mobile menu toggle ----
+const mobileMenuBtn = document.getElementById("mobile-menu-toggle");
+const categoryMenu = document.getElementById("category-menu");
+mobileMenuBtn.addEventListener("click", () => categoryMenu.classList.toggle("open"));
 
 // ---- Cart toggle ----
 const cartBtn = document.getElementById("cart-button");
 const cartEl = document.getElementById("cart-container");
-
 cartBtn.addEventListener("click", () => cartEl.classList.toggle("open"));
-
-// ---- Place order ----
-async function placeOrder() {
-    if (Object.keys(cart).length === 0) { alert("A kosár üres!"); return; }
-    alert("Rendelés leadva!");
-}
 
 // ---- Init ----
 loadMenu();
