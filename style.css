@@ -343,6 +343,7 @@ hr {
     }
 
     .category-toggle {
+        top: 20px;
         display: flex;
     }
 
@@ -393,6 +394,7 @@ hr {
     }
 
     .category-toggle {
+        top: 20px;
         display: flex
     }
 
