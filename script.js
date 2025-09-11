@@ -108,6 +108,7 @@ function updateCart(id, name, price, change) {
     if (qtySpan) qtySpan.textContent = cart[id] ? cart[id].qty : 0;
 
     renderCart();
+    updateCartCount();
 }
 
 // ---- Render cart ----
@@ -140,7 +141,6 @@ function renderCart() {
 
     document.getElementById("total").textContent = "Összesen: " + total + " RON";
 
-    // Frissítjük a kosár ikon badge-jét
     updateCartCount(itemCount);
 }
 
@@ -173,6 +173,7 @@ function deleteCartItem(id) {
     const qtySpan = document.getElementById("qty-" + id);
     if (qtySpan) qtySpan.textContent = 0;
     renderCart();
+    updateCartCount();
 }
 
 function clearCart() {
@@ -182,6 +183,7 @@ function clearCart() {
     }
     cart = {};
     renderCart();
+    updateCartCount();
 }
 
 // ---- Place order ----
