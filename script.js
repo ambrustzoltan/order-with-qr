@@ -63,25 +63,25 @@ function renderMenu() {
         cat.items.forEach(item => {
             const li = document.createElement("li");
             li.innerHTML = `
-    <div class="item-wrapper">
-        <img src="${item.img}" alt="${item.name}">
-        <div class="item-info">
-            <div class="item-top">
-                <div class="item-name-price">
-                    <div class="item-name">${item.name}</div>
-                    <div class="item-price">${item.price} RON</div>
+                <div class="item-wrapper">
+                    ${item.img ? `<img src="${item.img}" alt="${item.name}">` : ""}
+                    <div class="item-info">
+                        <div class="item-top">
+                            <div class="item-name-price">
+                                <span class="item-name">${item.name}</span>
+                                <span class="item-price">${item.price} RON</span>
+                            </div>
+                            <div class="item-qty-buttons">
+                                <button onclick="updateCart(${item.id}, '${item.name}', ${item.price}, -1)">-</button>
+                                <span id="menu-qty-${item.id}">0</span>
+                                <button onclick="updateCart(${item.id}, '${item.name}', ${item.price}, 1)">+</button>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="item-description">${item.description || ""}</div>
+                    </div>
                 </div>
-                <div class="item-qty-buttons">
-                    <button onclick="updateCart(${item.id}, '${item.name}', ${item.price}, -1)">-</button>
-                    <span id="menu-qty-${item.id}">${cart[item.id]?.qty || 0}</span>
-                    <button onclick="updateCart(${item.id}, '${item.name}', ${item.price}, 1)">+</button>
-                </div>
-            </div>
-            <hr>
-            <div class="item-description">${item.description || ""}</div>
-        </div>
-    </div>
-`;
+            `;
             ul.appendChild(li);
         });
         foodDiv.appendChild(ul);
@@ -95,25 +95,25 @@ function renderMenu() {
         cat.items.forEach(item => {
             const li = document.createElement("li");
             li.innerHTML = `
-    <div class="item-wrapper">
-        <img src="${item.img}" alt="${item.name}">
-        <div class="item-info">
-            <div class="item-top">
-                <div class="item-name-price">
-                    <div class="item-name">${item.name}</div>
-                    <div class="item-price">${item.price} RON</div>
+                <div class="item-wrapper">
+                    ${item.img ? `<img src="${item.img}" alt="${item.name}">` : ""}
+                    <div class="item-info">
+                        <div class="item-top">
+                            <div class="item-name-price">
+                                <span class="item-name">${item.name}</span>
+                                <span class="item-price">${item.price} RON</span>
+                            </div>
+                            <div class="item-qty-buttons">
+                                <button onclick="updateCart(${item.id}, '${item.name}', ${item.price}, -1)">-</button>
+                                <span id="menu-qty-${item.id}">0</span>
+                                <button onclick="updateCart(${item.id}, '${item.name}', ${item.price}, 1)">+</button>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="item-description">${item.description || ""}</div>
+                    </div>
                 </div>
-                <div class="item-qty-buttons">
-                    <button onclick="updateCart(${item.id}, '${item.name}', ${item.price}, -1)">-</button>
-                    <span id="menu-qty-${item.id}">${cart[item.id]?.qty || 0}</span>
-                    <button onclick="updateCart(${item.id}, '${item.name}', ${item.price}, 1)">+</button>
-                </div>
-            </div>
-            <hr>
-            <div class="item-description">${item.description || ""}</div>
-        </div>
-    </div>
-`;
+            `;
             ul.appendChild(li);
         });
         drinkDiv.appendChild(ul);
