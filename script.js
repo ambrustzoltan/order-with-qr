@@ -143,17 +143,19 @@ function renderCart() {
 }
 
 
-// ---- Toggle cart (animációval) ----
+// ---- Toggle cart ----
 function toggleCart() {
-    const container = document.getElementById("cart-container");
-    if (container.classList.contains("show")) {
-        container.classList.remove("show");
-        setTimeout(() => container.classList.add("hidden"), 300);
-    } else {
-        container.classList.remove("hidden");
-        setTimeout(() => container.classList.add("show"), 10);
-    }
+    const cartEl = document.getElementById("cart-container");
+    cartEl.classList.toggle("open");
 }
+
+document.addEventListener("click", function (e) {
+    const cartEl = document.getElementById("cart-container");
+    const cartBtn = document.getElementById("cart-button");
+    if (!cartEl.contains(e.target) && !cartBtn.contains(e.target)) {
+        cartEl.classList.remove("open");
+    }
+});
 
 // ---- Badge update ----
 function updateCartCount() {
