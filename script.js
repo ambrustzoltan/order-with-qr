@@ -99,19 +99,24 @@ function renderMenu() {
 }
 
 // ---- Cart update ----
-function updateCart(id, name, price, change) {
+function updateCart(id, name, price, change, event) {
+    if (event) event.stopPropagation();
+
     if (!cart[id]) cart[id] = { name, qty: 0, price };
     cart[id].qty += change;
 
     if (cart[id].qty <= 0) delete cart[id];
+
     const menuQty = document.getElementById("menu-qty-" + id);
     if (menuQty) menuQty.textContent = cart[id]?.qty || 0;
+
     const cartQty = document.getElementById("cart-qty-" + id);
     if (cartQty) cartQty.textContent = cart[id]?.qty || 0;
 
     renderCart();
     updateCartCount();
 }
+
 
 
 // ---- Render cart ----
@@ -130,11 +135,11 @@ function renderCart() {
             <div class="cart-item-name">${item.name}</div>
             <div class="cart-item-subtotal">${item.qty} x ${item.price} RON = ${subtotal} RON</div>
             <div class="cart-buttons">
-                <button onclick="updateCart(${id}, '${item.name}', ${item.price}, -1)">-</button>
+                <button onclick="updateCart(${id}, '${item.name}', ${item.price}, -1, event)">-</button>
                 <span id="cart-qty-${id}">${item.qty}</span>
-                <button onclick="updateCart(${id}, '${item.name}', ${item.price}, 1)">+</button>
+                <button onclick="updateCart(${id}, '${item.name}', ${item.price}, 1, event)">+</button>
             </div>
-            <button class="delete-btn" onclick="deleteCartItem(${id})">Törlés</button>
+            <button class="delete-btn" onclick="deleteCartItem(${id}, event)">Törlés</button>
         `;
         cartList.appendChild(li);
     }
@@ -185,11 +190,17 @@ function deleteCartItem(id) {
 }
 
 
-function clearCart() {
+function clearCart(event) {
+    if (event) event.stopPropagation();
+
     for (let id in cart) {
         const menuQty = document.getElementById("menu-qty-" + id);
         if (menuQty) menuQty.textContent = 0;
+
+        const cartQty = document.getElementById("cart-qty-" + id);
+        if (cartQty) cartQty.textContent = 0;
     }
+
     cart = {};
     renderCart();
     updateCartCount();

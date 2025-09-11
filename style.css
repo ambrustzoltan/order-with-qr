@@ -141,11 +141,26 @@ li img {
     width: 350px;
     height: 100%;
     background: white;
-    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
+    box-shadow: -2px 0 10px rgba(0,0,0,0.2);
     padding: 20px;
     overflow-y: auto;
+    box-sizing: border-box;
     z-index: 999;
     transition: right 0.3s ease;
+}
+
+#cart-container ul {
+    max-height: calc(100% - 120px);
+    overflow-y: auto;
+}
+
+#cart-container .cart-actions {
+    position: sticky;
+    bottom: 0;
+    background: white;
+    padding-top: 10px;
+    display: flex;
+    gap: 10px;
 }
 
 #cart-container.open {
@@ -160,6 +175,11 @@ li img {
 
     #cart-container {
         width: 90%;
+        height: 90%;
+        right: -95%;
+        border-radius: 10px;
+        top: 5%;
+        padding: 10px;
     }
 
     button {
