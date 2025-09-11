@@ -71,6 +71,12 @@ function openDefaultCategory() {
 
 // ---- Render menu by category ----
 function renderMenuByCategory(type, subMenuName) {
+
+    const cartElLocal = document.getElementById("cart-container");
+    if (cartElLocal && cartElLocal.classList.contains('open')) {
+        cartElLocal.classList.remove('open');
+    }
+
     const foodDiv = document.getElementById("food-list");
     const drinkDiv = document.getElementById("drink-list");
     foodDiv.innerHTML = "";
@@ -113,14 +119,18 @@ function renderMenuByCategory(type, subMenuName) {
 }
 
 function toggleCategoryMenu() {
-    const isOpen = categoryMenu.classList.contains('open');
+     const isOpen = categoryMenu.classList.contains('open');
+    const cartElLocal = document.getElementById("cart-container");
+
     if (isOpen) {
         categoryMenu.classList.remove('open');
-  //      categoryToggle.classList.remove('hidden');
         document.removeEventListener('click', outsideClickListener);
     } else {
+        if (cartElLocal && cartElLocal.classList.contains('open')) {
+            cartElLocal.classList.remove('open');
+        }
+
         categoryMenu.classList.add('open');
-   //     categoryToggle.classList.add('hidden');
         setTimeout(() => { document.addEventListener('click', outsideClickListener); }, 0);
     }
 }
@@ -197,6 +207,12 @@ const cartEl = document.getElementById("cart-container");
 
 cartBtn.addEventListener("click", function (e) {
     e.stopPropagation();
+
+    const isOpen = cartEl.classList.contains('open');
+    if (!isOpen && categoryMenu.classList.contains('open')) {
+        categoryMenu.classList.remove('open');
+        document.removeEventListener('click', outsideClickListener);
+    }
     cartEl.classList.toggle("open");
     cartEl.classList.remove("hidden");
 });

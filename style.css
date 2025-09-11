@@ -239,7 +239,7 @@ hr {
     padding: 20px;
     overflow-y: auto;
     box-sizing: border-box;
-    z-index: 999;
+    z-index: 1001;
     transition: left 0.3s ease;
     display: flex;
     flex-direction: column;
