@@ -1,5 +1,6 @@
 body {
-    font-family: Arial, sans-serif, #292325;
+    font-family: Arial, sans-serif;
+    color: #292325;
     padding: 20px;
     max-width: 1080px;
     margin: auto;
@@ -53,13 +54,6 @@ li img {
     min-width: 200px;
 }
 
-#cart-container {
-    flex: 0 0 250px;
-    border: 1px solid #ccc;
-    padding: 10px;
-    background-color: #A88E6E;
-}
-
 .cart-item-name,
 .cart-item-subtotal,
 .cart-buttons {
@@ -85,6 +79,59 @@ li img {
     background-color: #ff4d4d;
 }
 
+  #cart-button {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #222;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    z-index: 1000;
+  }
+
+  #cart-count {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: red;
+    color: white;
+    border-radius: 50%;
+    font-size: 14px;
+    font-weight: bold;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hidden {
+    display: none;
+  }
+
+  #cart-container {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    background: white;
+    border-top: 2px solid #ddd;
+    padding: 20px;
+    max-height: 50vh;
+    overflow-y: auto;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
+    z-index: 999;
+  }
+  
 /* --- Mobile --- */
 @media (max-width: 768px) {
     .container {

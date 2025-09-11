@@ -147,6 +147,24 @@ function renderCart() {
     document.getElementById("total").textContent = "Összesen: " + total + " RON";
 }
 
+function toggleCart() {
+    const container = document.getElementById("cart-container");
+    container.classList.toggle("hidden");
+}
+
+function updateCartCount(count) {
+    const badge = document.getElementById("cart-count");
+    if (count > 0) {
+        badge.textContent = count;
+        badge.classList.remove("hidden");
+    } else {
+        badge.classList.add("hidden");
+    }
+}
+
+// Példa: frissítjük a számot (pl. amikor kosárba teszel valamit)
+updateCartCount(3);
+
 // ---- Cart item delete & clear ----
 function deleteCartItem(id) {
     delete cart[id];
