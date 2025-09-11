@@ -10,79 +10,82 @@ document.querySelector('h1').textContent = `Asztal ${table}`;
 let categories = { food: [], drink: [] };
 let cart = {};
 
+const categoryMenu = document.getElementById("category-menu");
+const categoryToggle = document.querySelector(".category-toggle");
+
 // ---- Menu load from DB ----
-    async function loadMenu() {
-        const { data, error } = await db
-            .from('items')
-            .select(`id,name,price,img,category_id,description,categories(id,name,type)`)
-            .order('id');
+async function loadMenu() {
+    const { data, error } = await db
+        .from('items')
+        .select(`id,name,price,img,category_id,description,categories(id,name,type)`)
+        .order('id');
 
-        if (error) { console.error(error); return; }
+    if (error) { console.error(error); return; }
 
-        data.forEach(item => {
-            const type = item.categories.type;
-            let cat = categories[type].find(c => c.sub_menu === item.categories.name);
-            if (!cat) {
-                cat = { sub_menu: item.categories.name, id: item.categories.id, type: type, items: [] };
-                categories[type].push(cat);
-            }
-            cat.items.push({
-                id: item.id,
-                name: item.name,
-                price: item.price,
-                img: item.img,
-                description: item.description
-            });
+    data.forEach(item => {
+        const type = item.categories.type;
+        let cat = categories[type].find(c => c.sub_menu === item.categories.name);
+        if (!cat) {
+            cat = { sub_menu: item.categories.name, id: item.categories.id, type: type, items: [] };
+            categories[type].push(cat);
+        }
+        cat.items.push({
+            id: item.id,
+            name: item.name,
+            price: item.price,
+            img: item.img,
+            description: item.description
         });
+    });
 
-        renderCategoryMenu();
-    }
+    renderCategoryMenu();
+}
 
-    // ---- Render category menu ----
-    function renderCategoryMenu() {
-        const categoryList = document.getElementById("category-list");
-        categoryList.innerHTML = "";
+// ---- Render category menu ----
+function renderCategoryMenu() {
+    const categoryList = document.getElementById("category-list");
+    categoryList.innerHTML = "";
 
-        ["food", "drink"].forEach(type => {
-            categories[type].forEach(cat => {
-                const li = document.createElement("li");
-                li.textContent = cat.sub_menu;
-                li.addEventListener("click", () => {
-                    renderMenuByCategory(cat.type, cat.sub_menu);
-                    if (window.innerWidth <= 768) categoryMenu.classList.remove("open");
-                });
-                categoryList.appendChild(li);
-            });
-        });
-
-        openDefaultCategory();
-    }
-
-    // ---- Open default category (smallest id) ----
-    function openDefaultCategory() {
-        const allCats = [...categories.food, ...categories.drink];
-        if (!allCats.length) return;
-        const defaultCat = allCats.reduce((prev, curr) => (curr.id < prev.id ? curr : prev), allCats[0]);
-        renderMenuByCategory(defaultCat.type, defaultCat.sub_menu);
-    }
-
-    // ---- Render menu by category ----
-    function renderMenuByCategory(type, subMenuName) {
-        const foodDiv = document.getElementById("food-list");
-        const drinkDiv = document.getElementById("drink-list");
-        foodDiv.innerHTML = "";
-        drinkDiv.innerHTML = "";
-
-        const selectedCat = categories[type].find(c => c.sub_menu === subMenuName);
-        if (!selectedCat) return;
-
-        const h3 = document.createElement("h3");
-        h3.textContent = selectedCat.sub_menu;
-        const ul = document.createElement("ul");
-
-        selectedCat.items.forEach(item => {
+    ["food", "drink"].forEach(type => {
+        categories[type].forEach(cat => {
             const li = document.createElement("li");
-            li.innerHTML = `
+            li.textContent = cat.sub_menu;
+            li.addEventListener("click", () => {
+                renderMenuByCategory(cat.type, cat.sub_menu);
+                if (window.innerWidth <= 768) categoryMenu.classList.remove("open");
+            });
+            categoryList.appendChild(li);
+        });
+    });
+
+    openDefaultCategory();
+}
+
+// ---- Open default category (smallest id) ----
+function openDefaultCategory() {
+    const allCats = [...categories.food, ...categories.drink];
+    if (!allCats.length) return;
+    const defaultCat = allCats.reduce((prev, curr) => (curr.id < prev.id ? curr : prev), allCats[0]);
+    renderMenuByCategory(defaultCat.type, defaultCat.sub_menu);
+}
+
+// ---- Render menu by category ----
+function renderMenuByCategory(type, subMenuName) {
+    const foodDiv = document.getElementById("food-list");
+    const drinkDiv = document.getElementById("drink-list");
+    foodDiv.innerHTML = "";
+    drinkDiv.innerHTML = "";
+
+    const selectedCat = categories[type].find(c => c.sub_menu === subMenuName);
+    if (!selectedCat) return;
+
+    const h3 = document.createElement("h3");
+    h3.textContent = selectedCat.sub_menu;
+    const ul = document.createElement("ul");
+
+    selectedCat.items.forEach(item => {
+        const li = document.createElement("li");
+        li.innerHTML = `
                 <div class="item-wrapper">
                     ${item.img ? `<img src="${item.img}" alt="${item.name}" width="80">` : ""}
                     <div class="item-info">
@@ -102,12 +105,38 @@ let cart = {};
                     </div>
                 </div>
             `;
-            ul.appendChild(li);
-        });
+        ul.appendChild(li);
+    });
 
-        if (type === "food") foodDiv.appendChild(h3), foodDiv.appendChild(ul);
-        else drinkDiv.appendChild(h3), drinkDiv.appendChild(ul);
+    if (type === "food") foodDiv.appendChild(h3), foodDiv.appendChild(ul);
+    else drinkDiv.appendChild(h3), drinkDiv.appendChild(ul);
+}
+
+function toggleCategoryMenu() {
+    const isOpen = categoryMenu.classList.contains('open');
+    if (isOpen) {
+        categoryMenu.classList.remove('open');
+        categoryToggle.classList.remove('hidden');
+        document.removeEventListener('click', outsideClickListener);
+    } else {
+        categoryMenu.classList.add('open');
+        categoryToggle.classList.add('hidden');
+        setTimeout(() => { document.addEventListener('click', outsideClickListener); }, 0);
     }
+}
+
+function outsideClickListener(e) {
+    if (!categoryMenu.contains(e.target) && !categoryToggle.contains(e.target)) {
+        toggleCategoryMenu();
+    }
+}
+
+categoryToggle.addEventListener('click', e => {
+    e.stopPropagation();
+    toggleCategoryMenu();
+});
+
+
 // ---- Cart update ----
 function updateCart(id, name, price, change, event) {
     if (event) event.stopPropagation();
