@@ -4,25 +4,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>QR Demo Éttermi Rendelő</title>
+    <title>QR Éttermi Rendelő</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Rubik+Dirt&display=swap" rel="stylesheet">
-
 </head>
 
 <body>
-    <h1></h1>
+    <h1 id="table-header"></h1>
+
     <div class="container">
-        <div id="menu">
-            <h1>Menü</h1>
+        <aside id="category-menu">
+            <h2>Kategóriák</h2>
+            <ul id="category-list"></ul>
+        </aside>
+
+        <main id="menu">
             <div id="food-list"></div>
             <div id="drink-list"></div>
-        </div>
+        </main>
     </div>
 
     <button id="cart-button">
-        🛒
-        <span id="cart-count" class="hidden">0</span>
+        🛒 <span id="cart-count" class="hidden">0</span>
     </button>
 
     <div id="cart-container" class="hidden">
@@ -34,10 +37,8 @@
         </div>
     </div>
 
-
     <!-- Supabase JS SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
     <script src="script.js"></script>
 </body>
-
 </html>
