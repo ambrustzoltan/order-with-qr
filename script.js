@@ -179,7 +179,8 @@ function updateCartCount() {
 }
 
 // ---- Cart item delete & clear ----
-function deleteCartItem(id) {
+function deleteCartItem(id, event) {
+    if (event) event.stopPropagation();
     delete cart[id];
 
     const menuQty = document.getElementById("menu-qty-" + id);
