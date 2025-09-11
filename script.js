@@ -52,7 +52,8 @@ function renderCategoryMenu() {
             li.textContent = cat.sub_menu;
             li.addEventListener("click", () => {
                 renderMenuByCategory(cat.type, cat.sub_menu);
-                if (window.innerWidth <= 768) categoryMenu.classList.remove("open");
+                categoryMenu.classList.remove("open");
+                document.removeEventListener('click', outsideClickListener);
             });
             categoryList.appendChild(li);
         });
